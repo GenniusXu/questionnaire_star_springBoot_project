@@ -1,0 +1,18 @@
+# 设置MySQL数据库的url、用户名、密码
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.134.128.39:3306/intelligent_fridge
+    username: root
+    password: Sixu20040230@
+
+
+# 开启驼峰命名和下划线命名的自动转换（这样才能将pojo类中的字段名与MySQL中的字段名相匹配）
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 设置SpringBoot监听端口号为8080
+server:
+  port: 8080
