@@ -6,6 +6,7 @@ import mygroup.questionnaire_star.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,8 +15,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     QuestionnaireMapper questionnaireMapper;
 
     @Override
-    public void add(Questionnaire questionnaire) {
+    public Questionnaire add(Questionnaire questionnaire) {
+        questionnaire.setCreateTime(LocalDateTime.now());
+        questionnaire.setUpdateTime(LocalDateTime.now());
         questionnaireMapper.add(questionnaire);
+        return questionnaire;
     }
 
     @Override
@@ -24,8 +28,10 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public void update(Questionnaire questionnaire) {
+    public Questionnaire update(Questionnaire questionnaire) {
+        questionnaire.setUpdateTime(LocalDateTime.now());
         questionnaireMapper.update(questionnaire);
+        return questionnaire;
     }
 
     @Override

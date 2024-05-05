@@ -13,7 +13,7 @@ public class Questionnaire {
     List<String> managersId;//管理员的Id（拥有编辑权限）
     String status;//问卷状态，“草稿”，“已发布”
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime createDate;//创建时间
+    LocalDateTime createTime;//创建时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime updateTime;//更新时间
 }

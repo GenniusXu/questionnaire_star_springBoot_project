@@ -9,9 +9,9 @@ import java.util.List;
 public interface QuestionService {
     List<Question> listAll(Integer questionnaireId);
 
-    void add(Question question);
+    Question add(Question question);
 
     void delete(Integer questionId);
 
-    void update(Question question);
+    Question update(Question question);
 }

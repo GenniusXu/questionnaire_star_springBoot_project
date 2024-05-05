@@ -17,26 +17,26 @@ public class QuestionController {
     QuestionService questionService;
 
     @GetMapping("/list_all")
-    Result listAll(Integer questionnaireId){
+    Result listAll(@RequestParam Integer questionnaireId){
         List<Question> questions = questionService.listAll(questionnaireId);
         return Result.success(questions);
     }
 
     @PostMapping("/add")
-    Result add(Question question){
-        questionService.add(question);
-        return Result.success();
+    Result add(@RequestBody Question question){
+        question = questionService.add(question);
+        return Result.success(question);
     }
 
     @DeleteMapping("/delete")
-    Result delete(Integer questionId){
-        questionService.delete(questionId);
+    Result delete(@RequestParam Integer id){
+        questionService.delete(id);
         return Result.success();
     }
 
     @PutMapping("/update")
-    Result update(Question question) {
-        questionService.update(question);
-        return Result.success();
+    Result update(@RequestBody Question question) {
+        question = questionService.update(question);
+        return Result.success(question);
     }
 }

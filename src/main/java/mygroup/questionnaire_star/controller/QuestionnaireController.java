@@ -6,6 +6,7 @@ import mygroup.questionnaire_star.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -16,24 +17,24 @@ public class QuestionnaireController {
 
     @PostMapping("/add")
     public Result add(@RequestBody Questionnaire questionnaire) {
-        questionnaireService.add(questionnaire);
-        return Result.success();
+        questionnaire = questionnaireService.add(questionnaire);
+        return Result.success(questionnaire);
     }
 
     @GetMapping("/list_all")
-    public Result listAll(Integer creatorId) {
+    public Result listAll(@RequestParam Integer creatorId) {
         List<Questionnaire> questionnaires = questionnaireService.listAll(creatorId);
         return Result.success(questionnaires);
     }
 
     @PutMapping("/update")
     public Result update(@RequestBody Questionnaire questionnaire) {
-        questionnaireService.update(questionnaire);
-        return Result.success();
+        questionnaire = questionnaireService.update(questionnaire);
+        return Result.success(questionnaire);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(Integer id) {
+    public Result delete(@RequestParam Integer id) {
         questionnaireService.delete(id);
         return Result.success();
     }

@@ -11,11 +11,13 @@ public interface QuestionMapper {
     @Select("select * from question where questionnaire_id=#{questionnaireId}")
     public List<Question> listAll(Integer questionnaireId);
 
-    @Insert("insert into question (id,number,questionnaire_id,type,title,options) values (id,number,questionnaireId,type,title,options)")
+    @Insert("insert into question (number,questionnaire_id,type,title,options) " +
+            "values (#{number},#{questionnaireId},#{type},#{title},#{options})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     public void add(Question question);
 
-    @Delete("delete from question where question_id=#{questionId}")
-    public void delete(Integer questionId);
+    @Delete("delete from question where id=#{id}")
+    public void delete(Integer id);
 
     @Update("update question set number=#{number},type=#{type},title=#{title}," +
             "options=#{options} where id=#{id}")

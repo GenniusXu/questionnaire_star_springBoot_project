@@ -19,17 +19,20 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void add(Question question) {
+    public Question add(Question question) {
         questionMapper.add(question);
+        return question;
     }
 
     @Override
-    public void delete(Integer questionId) {
-        questionMapper.delete(questionId);
+    public void delete(Integer id) {
+        questionMapper.delete(id);
     }
 
     @Override
-    public void update(Question question) {
+    public Question update(Question question) {
+
         questionMapper.update(question);
+        return question;
     }
 }

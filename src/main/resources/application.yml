@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.134.128.39:3306/intelligent_fridge
+    url: jdbc:mysql://8.134.128.39:3306/questionnaire_star
     username: root
     password: Sixu20040230@
 
