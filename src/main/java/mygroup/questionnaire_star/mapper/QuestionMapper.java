@@ -22,4 +22,7 @@ public interface QuestionMapper {
     @Update("update question set number=#{number},type=#{type},title=#{title}," +
             "options=#{options} where id=#{id}")
     public void update(Question question);
+
+    @Select("select * from question where id=#{questionId}")
+    Question findQuestionById(Integer questionId);
 }

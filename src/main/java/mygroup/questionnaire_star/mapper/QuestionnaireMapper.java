@@ -20,4 +20,7 @@ public interface QuestionnaireMapper {
 
     @Delete("DELETE FROM questionnaire WHERE id = #{id}")
     void delete(Integer id);
+
+    @Select("SELECT * FROM questionnaire where id=#{questionnaireId}")
+    Questionnaire getQuestionnaireById(Integer questionnaireId);
 }
