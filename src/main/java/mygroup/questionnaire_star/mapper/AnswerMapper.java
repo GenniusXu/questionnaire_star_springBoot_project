@@ -21,4 +21,8 @@ public interface AnswerMapper {
 
     @Delete("delete from answer where id=#{answerId}")
     void deleteByAnswerId(Integer answerId);
+
+    @Update("update answer set question_id=#{questionId},filler_id=#{fillerId},selected_options=#{selectedOptions}," +
+            "fill_in_answer=#{fillInAnswer} where id=#{id}")
+    void update(Answer answer);
 }

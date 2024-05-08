@@ -36,7 +36,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public List<Answer> listAllByFillerIdId(Integer fillerId) {
+    public List<Answer> listAllByFillerId(Integer fillerId) {
         List<Answer> answers = answerMapper.listAllByFillerIdId(fillerId);
         return answers;
     }
@@ -55,8 +55,30 @@ public class AnswerServiceImpl implements AnswerService {
                     answerMapper.deleteByAnswerId(answerId);
                 }
             }
-
         }
         return deletedAnswers;
+    }
+
+    @Override
+    public Answer update(Answer answer) {
+        answerMapper.update(answer);
+        return answer;
+    }
+
+    @Override
+    public List<Answer> listAllByFillerIdAndQuestionnaireId(Integer fillerId, Integer questionnaireId) {
+        List<Answer> answers = answerMapper.listAllByFillerIdId(fillerId);
+        List<Answer> resAnswers = new ArrayList<>();
+        for (Answer answer : answers) {
+            Integer answerId = answer.getId();
+            Integer questionId = answer.getQuestionId();
+            Question question = questionMapper.findQuestionById(questionId);
+            if (question != null) {
+                if (question.getQuestionnaireId().equals(questionId)) {
+                    resAnswers.add(answer);
+                }
+            }
+        }
+        return resAnswers;
     }
 }

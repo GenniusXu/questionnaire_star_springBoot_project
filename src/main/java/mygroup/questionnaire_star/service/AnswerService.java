@@ -12,7 +12,11 @@ public interface AnswerService {
 
     List<Answer> listAllByQuestionId(Integer questionId);
 
-    List<Answer> listAllByFillerIdId(Integer fillerId);
+    List<Answer> listAllByFillerId(Integer fillerId);
 
     List<Answer> deleteByFillerIdAndQustionnaireId(Integer fillerId, Integer questionnaireId);
+
+    Answer update(Answer answer);
+
+    List<Answer> listAllByFillerIdAndQuestionnaireId(Integer fillerId, Integer questionnaireId);
 }
