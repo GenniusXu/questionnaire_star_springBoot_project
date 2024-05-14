@@ -12,11 +12,20 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE openid=#{openid}")
     User findUserByOpenid(String openid);
 
-    @Insert("INSERT INTO user (openid,name,createTime,updateTime)" +
-            "VALUES (#{openid},#{name},#{createTime},#{updateTime})")
+    @Select("SELECT * FROM user WHERE name=#{name}")
+    User findUserByName(String name);
+
+    @Insert("INSERT INTO user (openid,name,createTime,updateTime,password)" +
+            "VALUES (#{openid},#{name},NOW(), NOW(),#{password})")
     void add(User user);
 
     // 根据OpenID删除用户
     @Delete("DELETE FROM user where openid=#{openid}")
     void deleUserByOpenID(String openid);
+
+    @Update("UPDATE user SET password=#{password} WHERE openid = #{openid}")
+    void setPassword(String openid, String password);
+
+    @Update("UPDATE user SET phoneNumber=#{phoneNumber} WHERE openid=#{openid}")
+    void setPhoneNumber(String openid, String phoneNumber);
 }

@@ -26,22 +26,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User add(String openid, String name) {
-        if (openid == null || openid.trim().isEmpty()) {
-            throw new IllegalArgumentException("OpenID must not be null or empty");
-        }
-        User existingUser = userMapper.findUserByOpenid(openid);
-        if (existingUser != null) {
-            // 如果用户已存在，则不创建新用户并抛出异常
-            throw new IllegalStateException("User with OpenID " + openid + " already exists");
-        }
+    public User findUserByName(String name) {
+        return userMapper.findUserByName(name);
+    }
 
-        User user = new User();
-        user.setOpenid(openid);
-        user.setName(name);
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
-
+    @Override
+    public User add(User user) {
         userMapper.add(user);
         return user;
     }
@@ -49,5 +39,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleUserByOpenID(String openid) {
         userMapper.deleUserByOpenID(openid);
+    }
+
+    @Override
+    public void setPassword(String openid,String password) {
+        userMapper.setPassword(openid,password);
+    }
+
+    @Override
+    public void setPhoneNumber(String openid, String phoneNumber) {
+        userMapper.setPhoneNumber(openid,phoneNumber);
     }
 }

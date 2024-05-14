@@ -1,6 +1,7 @@
 package mygroup.questionnaire_star.service;
 
 import mygroup.questionnaire_star.pojo.Answer;
+import mygroup.questionnaire_star.pojo.AnswerOption;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface AnswerService {
     Answer update(Answer answer);
 
     List<Answer> listAllByFillerIdAndQuestionnaireId(String fillerId, Integer questionnaireId);
+
+    List<AnswerOption>calculateOptionStats(Integer questionId);
 }

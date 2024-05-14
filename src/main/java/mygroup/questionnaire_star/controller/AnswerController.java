@@ -1,6 +1,7 @@
 package mygroup.questionnaire_star.controller;
 
 import mygroup.questionnaire_star.pojo.Answer;
+import mygroup.questionnaire_star.pojo.AnswerOption;
 import mygroup.questionnaire_star.pojo.Result;
 import mygroup.questionnaire_star.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +57,10 @@ public class AnswerController {
         return Result.success(answer);
     }
 
+    //获取选项计数
+    @GetMapping("/calculateOptionStats")
+    Result calculateOptionStats(Integer questionId){
+        List<AnswerOption> stats=answerService.calculateOptionStats(questionId);
+        return Result.success(stats);
+    }
 }

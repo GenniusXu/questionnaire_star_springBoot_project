@@ -4,13 +4,17 @@ import mygroup.questionnaire_star.mapper.AnswerMapper;
 import mygroup.questionnaire_star.mapper.QuestionMapper;
 import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
 import mygroup.questionnaire_star.pojo.Answer;
+import mygroup.questionnaire_star.pojo.AnswerOption;
 import mygroup.questionnaire_star.pojo.Question;
 import mygroup.questionnaire_star.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
@@ -77,5 +81,33 @@ public class AnswerServiceImpl implements AnswerService {
             }
         }
         return resAnswers;
+    }
+
+
+    @Override
+    public List<AnswerOption> calculateOptionStats(Integer questionId) {
+        // 查询数据库，获取该问题下的所有回答
+        List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
+        int answerTotalCount = answers.size(); // 计算回答的总数
+
+        // 使用Map来统计每个选项的出现次数
+        Map<String, Integer> optionCountMap = new HashMap<>();
+
+        // 遍历所有回答，统计每个单独选项的出现次数
+        for (Answer answer : answers) {
+            List<String> selectedOptions = answer.getSelectedOptions();
+            for (String option : selectedOptions) {
+                optionCountMap.put(option, optionCountMap.getOrDefault(option, 0) + 1);//如果选项不存在，默认值设为0，然后加1
+            }
+        }
+
+        // 将统计结果转换为AnswerOption列表
+        List<AnswerOption> stats = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : optionCountMap.entrySet()) {
+            double rate = (double) entry.getValue() / answerTotalCount; // 计算选择比例
+            stats.add(new AnswerOption(questionId, entry.getKey(), entry.getValue(), rate));
+        }
+        // 返回统计结果
+        return stats;
     }
 }
