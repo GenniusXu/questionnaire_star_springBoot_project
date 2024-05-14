@@ -5,9 +5,7 @@ import mygroup.questionnaire_star.mapper.QuestionMapper;
 import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
 import mygroup.questionnaire_star.pojo.Answer;
 import mygroup.questionnaire_star.pojo.Question;
-import mygroup.questionnaire_star.pojo.Questionnaire;
 import mygroup.questionnaire_star.service.AnswerService;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +34,14 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public List<Answer> listAllByFillerId(Integer fillerId) {
-        List<Answer> answers = answerMapper.listAllByFillerIdId(fillerId);
+    public List<Answer> listAllByFillerId(String fillerId) {
+        List<Answer> answers = answerMapper.listAllByFillerId(fillerId);
         return answers;
     }
 
     @Override
-    public List<Answer> deleteByFillerIdAndQustionnaireId(Integer fillerId, Integer questionnaireId) {
-        List<Answer> answers = answerMapper.listAllByFillerIdId(fillerId);
+    public List<Answer> deleteByFillerIdAndQustionnaireId(String fillerId, Integer questionnaireId) {
+        List<Answer> answers = answerMapper.listAllByFillerId(fillerId);
         List<Answer> deletedAnswers = new ArrayList<>();
         for (Answer answer : answers) {
             Integer answerId = answer.getId();
@@ -66,15 +64,14 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public List<Answer> listAllByFillerIdAndQuestionnaireId(Integer fillerId, Integer questionnaireId) {
-        List<Answer> answers = answerMapper.listAllByFillerIdId(fillerId);
+    public List<Answer> listAllByFillerIdAndQuestionnaireId(String fillerId, Integer questionnaireId) {
+        List<Answer> answers = answerMapper.listAllByFillerId(fillerId);
         List<Answer> resAnswers = new ArrayList<>();
         for (Answer answer : answers) {
-            Integer answerId = answer.getId();
             Integer questionId = answer.getQuestionId();
             Question question = questionMapper.findQuestionById(questionId);
             if (question != null) {
-                if (question.getQuestionnaireId().equals(questionId)) {
+                if (question.getQuestionnaireId().equals(questionnaireId)) {
                     resAnswers.add(answer);
                 }
             }

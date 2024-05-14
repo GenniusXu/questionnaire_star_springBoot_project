@@ -30,21 +30,21 @@ public class AnswerController {
 
     //列出某个用户的所有回答
     @GetMapping("/list_all_by_filler_id")
-    Result listAllByFillerId(@RequestParam Integer fillerId){
+    Result listAllByFillerId(@RequestParam String fillerId){
         List<Answer> answers = answerService.listAllByFillerId(fillerId);
         return Result.success(answers);
     }
 
     //列出某个用户在某份问卷中的所有回答
     @GetMapping("/list_all_by_filler_id_and_qustionnaire_id")
-    Result listAllByFillerIdAndQuestionnaireId(@RequestParam Integer fillerId, @RequestParam Integer questionnaireId){
+    Result listAllByFillerIdAndQuestionnaireId(@RequestParam String fillerId, @RequestParam Integer questionnaireId){
         List<Answer> answers = answerService.listAllByFillerIdAndQuestionnaireId(fillerId, questionnaireId);
         return Result.success(answers);
     }
 
     //删除某个用户在某份问卷中的所有回答
     @DeleteMapping("/delete_by_filler_id_and_question_id")
-    Result deleteByFillerId(@RequestParam Integer fillerId, @RequestParam Integer questionnaireId){
+    Result deleteByFillerId(@RequestParam String fillerId, @RequestParam Integer questionnaireId){
         List<Answer> answers = answerService.deleteByFillerIdAndQustionnaireId(fillerId, questionnaireId);
         return Result.success(answers);
     }

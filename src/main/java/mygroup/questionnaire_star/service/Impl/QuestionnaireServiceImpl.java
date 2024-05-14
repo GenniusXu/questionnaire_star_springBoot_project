@@ -23,7 +23,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<Questionnaire> listAll(Integer creatorId) {
+    public List<Questionnaire> listAll(String creatorId) {
         return questionnaireMapper.listAll(creatorId);
     }
 

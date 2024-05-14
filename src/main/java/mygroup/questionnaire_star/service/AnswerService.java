@@ -12,11 +12,11 @@ public interface AnswerService {
 
     List<Answer> listAllByQuestionId(Integer questionId);
 
-    List<Answer> listAllByFillerId(Integer fillerId);
+    List<Answer> listAllByFillerId(String fillerId);
 
-    List<Answer> deleteByFillerIdAndQustionnaireId(Integer fillerId, Integer questionnaireId);
+    List<Answer> deleteByFillerIdAndQustionnaireId(String fillerId, Integer questionnaireId);
 
     Answer update(Answer answer);
 
-    List<Answer> listAllByFillerIdAndQuestionnaireId(Integer fillerId, Integer questionnaireId);
+    List<Answer> listAllByFillerIdAndQuestionnaireId(String fillerId, Integer questionnaireId);
 }

@@ -17,7 +17,7 @@ public interface AnswerMapper {
     List<Answer> listAllByQuestionId(Integer questionId);
 
     @Select("select * from answer where filler_id=#{fillerId}")
-    List<Answer> listAllByFillerIdId(Integer fillerId);
+    List<Answer> listAllByFillerId(String fillerId);
 
     @Delete("delete from answer where id=#{answerId}")
     void deleteByAnswerId(Integer answerId);

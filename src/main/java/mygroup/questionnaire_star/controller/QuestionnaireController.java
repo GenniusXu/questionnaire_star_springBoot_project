@@ -22,7 +22,7 @@ public class QuestionnaireController {
     }
 
     @GetMapping("/list_all")
-    public Result listAll(@RequestParam Integer creatorId) {
+    public Result listAll(@RequestParam String creatorId) {
         List<Questionnaire> questionnaires = questionnaireService.listAll(creatorId);
         return Result.success(questionnaires);
     }

@@ -13,7 +13,7 @@ public interface QuestionnaireMapper {
     void add(Questionnaire questionnaire);
 
     @Select("SELECT * FROM questionnaire where creator_id=#{creatorId}")
-    List<Questionnaire> listAll(Integer creatorId);
+    List<Questionnaire> listAll(String creatorId);
 
     @Update("UPDATE questionnaire SET managers_id = #{managersId}, status = #{status}, update_time = #{updateTime} WHERE id = #{id}")
     void update(Questionnaire questionnaire);
