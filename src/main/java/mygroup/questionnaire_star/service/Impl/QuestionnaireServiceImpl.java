@@ -1,18 +1,27 @@
 package mygroup.questionnaire_star.service.Impl;
 
+import mygroup.questionnaire_star.mapper.AnswerMapper;
+import mygroup.questionnaire_star.mapper.QuestionMapper;
 import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
+import mygroup.questionnaire_star.pojo.Answer;
+import mygroup.questionnaire_star.pojo.Question;
 import mygroup.questionnaire_star.pojo.Questionnaire;
+import mygroup.questionnaire_star.service.AnswerService;
 import mygroup.questionnaire_star.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Autowired
     QuestionnaireMapper questionnaireMapper;
+    @Autowired
+    AnswerMapper answerMapper;
+    @Autowired
+    QuestionMapper questionMapper;
 
     @Override
     public Questionnaire add(Questionnaire questionnaire) {
@@ -23,7 +32,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<Questionnaire> listAll(String creatorId) {
+    public List<Questionnaire> listAllByCreatorId(String creatorId) {
         return questionnaireMapper.listAll(creatorId);
     }
 
@@ -37,5 +46,24 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public void delete(Integer id) {
         questionnaireMapper.delete(id);
+    }
+
+    public List<Questionnaire> listAllByFillerId(String fillerId) {
+        List<Questionnaire> questionnaires = new ArrayList<>();
+        List<Answer> answers = answerMapper.listAllByFillerId(fillerId);
+        Set<Integer> questionnaireIds = new HashSet<>();
+        for (Answer answer : answers) {
+            Integer questionId = answer.getQuestionId();
+            Question question = questionMapper.findQuestionById(questionId);
+            if (question != null) {
+                Integer questionnaireId = question.getQuestionnaireId();
+                questionnaireIds.add(questionnaireId);
+            }
+        }
+        for (Integer questionnaireId : questionnaireIds) {
+            Questionnaire questionnaire = questionnaireMapper.getQuestionnaireById(questionnaireId);
+            questionnaires.add(questionnaire);
+        }
+        return questionnaires;
     }
 }

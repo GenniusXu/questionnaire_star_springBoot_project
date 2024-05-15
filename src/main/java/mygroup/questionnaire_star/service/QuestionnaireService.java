@@ -8,7 +8,8 @@ import java.util.List;
 @Service
 public interface QuestionnaireService {
     Questionnaire add(Questionnaire questionnaire);
-    List<Questionnaire> listAll(String creatorId);
+    List<Questionnaire> listAllByCreatorId(String creatorId);
     Questionnaire update(Questionnaire questionnaire);
     void delete(Integer id);
+    public List<Questionnaire> listAllByFillerId(String fillerId);
 }

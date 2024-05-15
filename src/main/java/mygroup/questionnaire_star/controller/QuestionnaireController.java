@@ -6,9 +6,9 @@ import mygroup.questionnaire_star.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/questionnaire")
 public class QuestionnaireController {
@@ -21,9 +21,9 @@ public class QuestionnaireController {
         return Result.success(questionnaire);
     }
 
-    @GetMapping("/list_all")
+    @GetMapping("/listAllByCreatorId")
     public Result listAll(@RequestParam String creatorId) {
-        List<Questionnaire> questionnaires = questionnaireService.listAll(creatorId);
+        List<Questionnaire> questionnaires = questionnaireService.listAllByCreatorId(creatorId);
         return Result.success(questionnaires);
     }
 
@@ -37,5 +37,11 @@ public class QuestionnaireController {
     public Result delete(@RequestParam Integer id) {
         questionnaireService.delete(id);
         return Result.success();
+    }
+
+    @GetMapping("listAllByFillerId")
+    public Result listAllByFillerId(String fillerId){
+        List<Questionnaire> questionnaires = questionnaireService.listAllByFillerId(fillerId);
+        return Result.success(questionnaires);
     }
 }
