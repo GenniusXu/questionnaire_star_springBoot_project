@@ -17,4 +17,10 @@ public interface TemplateMapper {
 
     @Select("SELECT questions from template WHERE id=#{templateId};")
     String getQuestionsByTemplateId(Integer templateId);
+
+    @Select("SELECT * from template WHERE name=#{name};")
+    List<QTemplate> getTemplatesByName(String name);
+
+    @Select("SELECT * from template WHERE id=#{templateId};")
+    QTemplate getTemplateById(Integer templateId);
 }

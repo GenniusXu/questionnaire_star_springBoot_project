@@ -14,6 +14,7 @@ public class MyBatisConfig {
     public ConfigurationCustomizer mybatisConfigurationCustomizer() {
         return configuration -> {
             configuration.getTypeHandlerRegistry().register(mygroup.questionnaire_star.config.StringListTypeHandler.class);
+            configuration.getTypeHandlerRegistry().register(mygroup.questionnaire_star.config.QuestionListTypeHandler.class);
         };
     }
 }

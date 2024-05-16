@@ -22,6 +22,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 * 因为Questionnaire中的options属性需要作为参数传递给SQL语句，并且它是一个复杂类型（List<String>），
 * 所以需要实现一个自定义的MyBatis类型处理器（TypeHandler）。将列表转换为数据库能理解的格式（json字符串），反之亦然。
 * */
+
+//PS：要把json和什么复杂数据类型互转，就把下面代码中的List<String>全部替换成该复杂数据类型就行，
+//同时别忘了将parseJsonToList私有方法中的return objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));最后两个class改成对应类型的class
+
 @MappedTypes(List.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class StringListTypeHandler extends BaseTypeHandler<List<String>> {

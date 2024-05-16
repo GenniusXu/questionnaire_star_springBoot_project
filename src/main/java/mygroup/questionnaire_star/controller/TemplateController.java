@@ -29,7 +29,18 @@ public class TemplateController {
     @GetMapping("/getQuestionsByTemplateId")
     Result getTemplatesByName(Integer templateId) {
         List<Question> questions = templateService.getQuestionsByTemplateId(templateId);
-        //List<QTemplate> templates = templateService.getTemplatesByName(name);
         return Result.success(questions);
+    }
+
+    @GetMapping("/getTemplatesByName")
+    Result getTemplatesByName(String name){
+        List<QTemplate> templates = templateService.getTemplatesByName(name);
+        return Result.success(templates);
+    }
+
+    @GetMapping("/getTemplateById")
+    Result getTemplateById(Integer templateId){
+        QTemplate template = templateService.getTemplateById(templateId);
+        return Result.success(template);
     }
 }

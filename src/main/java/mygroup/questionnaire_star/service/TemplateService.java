@@ -13,5 +13,8 @@ public interface TemplateService {
     List<Integer> getTemplateIdsByName(String name);
 
     List<Question> getQuestionsByTemplateId(Integer templateId);
-    //List<QTemplate> getTemplatesByName(String name);
+
+    List<QTemplate> getTemplatesByName(String name);
+
+    QTemplate getTemplateById(Integer templateId);
 }

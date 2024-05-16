@@ -25,7 +25,7 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public List<Question> getQuestionsByTemplateId(Integer templateId) {
         String jsonListOfQTemplate = templateMapper.getQuestionsByTemplateId(templateId);
-        System.out.println(jsonListOfQTemplate);
+        //System.out.println(jsonListOfQTemplate);
         if (jsonListOfQTemplate == null) {
 
             return null;
@@ -40,8 +40,16 @@ public class TemplateServiceImpl implements TemplateService {
         }
         return questions;
     }
-//    public List<QTemplate> getTemplatesByName(String name){
-//        List<QTemplate> templates = templateMapper.getTemplatesByName(name);
-//        return templates;
-//    }
+
+    @Override
+    public List<QTemplate> getTemplatesByName(String name){
+        List<QTemplate> templates = templateMapper.getTemplatesByName(name);
+        return templates;
+    }
+
+    @Override
+    public QTemplate getTemplateById(Integer templateId) {
+        QTemplate template = templateMapper.getTemplateById(templateId);
+        return template;
+    }
 }
