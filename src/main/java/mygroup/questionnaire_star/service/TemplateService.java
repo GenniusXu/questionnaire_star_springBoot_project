@@ -1,6 +1,7 @@
 package mygroup.questionnaire_star.service;
 
 import mygroup.questionnaire_star.pojo.QTemplate;
+import mygroup.questionnaire_star.pojo.Question;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 public interface TemplateService {
 
 
-    QTemplate getTemplateById(Integer templateId);
+    List<Integer> getTemplateIdsByName(String name);
 
-    List<QTemplate> getTemplatesByName(String name);
+    List<Question> getQuestionsByTemplateId(Integer templateId);
+    //List<QTemplate> getTemplatesByName(String name);
 }
