@@ -4,11 +4,13 @@ import mygroup.questionnaire_star.mapper.UserMapper;
 import mygroup.questionnaire_star.pojo.Result;
 import mygroup.questionnaire_star.pojo.User;
 import mygroup.questionnaire_star.service.UserService;
+import mygroup.questionnaire_star.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
@@ -18,14 +20,41 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //登录
+    // 用户登录
     @PostMapping("/Login")
-    public Result Login(){
+    public Result login(@RequestParam("name") String name, @RequestParam("password") String password) {
+        // 检查用户名和密码
+        User user = userService.findUserByName(name);
+        //System.out.println(user);
+        if (user != null && user.getPassword().equals(password)) {// 验证成功，创建会话或令牌
 
-        //用户名如果已经存在，则返回错误提示
 
-        return Result.success();
+            // 这里假设有一个方法来创建令牌
+            //String token = createToken(user); // 需要实现的具体令牌创建逻辑
+
+
+            // 准备数据返回给客户端
+            Map<String, Object> data = new HashMap<>();
+            data.put("openid", user.getOpenid());
+            data.put("name",user.getName());
+
+            String token = JwtUtil.genToken(data);
+
+            // 返回成功响应
+            return Result.success(token);
+        } else {
+            // 验证失败，返回错误信息
+            return Result.error("用户名或密码错误");
+        }
     }
+
+    // 假设的令牌创建方法，需要根据实际情况实现
+    private String createToken(User user) {
+        // 创建令牌的逻辑
+        // 这里只是一个示例，实际应用中需要考虑安全性
+        return "token_" + user.getOpenid();
+    }
+
     //更新用户
     @PutMapping("/update")
     public Result updateUser(@RequestBody User user){

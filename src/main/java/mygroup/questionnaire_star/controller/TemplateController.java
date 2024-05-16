@@ -32,12 +32,14 @@ public class TemplateController {
         return Result.success(questions);
     }
 
+    //根据模板名字获取模板
     @GetMapping("/getTemplatesByName")
     Result getTemplatesByName(String name){
         List<QTemplate> templates = templateService.getTemplatesByName(name);
         return Result.success(templates);
     }
 
+    //根据模板id获取模板，
     @GetMapping("/getTemplateById")
     Result getTemplateById(Integer templateId){
         QTemplate template = templateService.getTemplateById(templateId);
