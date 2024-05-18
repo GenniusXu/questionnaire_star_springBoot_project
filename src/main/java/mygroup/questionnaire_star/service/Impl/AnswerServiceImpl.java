@@ -5,6 +5,7 @@ import mygroup.questionnaire_star.mapper.QuestionMapper;
 import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
 import mygroup.questionnaire_star.pojo.Answer;
 import mygroup.questionnaire_star.pojo.AnswerOption;
+import mygroup.questionnaire_star.pojo.AnswerText;
 import mygroup.questionnaire_star.pojo.Question;
 import mygroup.questionnaire_star.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,5 +110,15 @@ public class AnswerServiceImpl implements AnswerService {
         }
         // 返回统计结果
         return stats;
+    }
+
+    //返回文本题所有文本
+    @Override
+    public List<AnswerText> listAllText(Integer questionId) {
+        List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
+        int answerTotalCount = answers.size(); // 计算回答的总数
+        List<AnswerText>texts=new ArrayList<>();
+        for(Answer answer:answers)texts.add(new AnswerText(questionId,answer.getFillInAnswer()));
+        return texts;
     }
 }

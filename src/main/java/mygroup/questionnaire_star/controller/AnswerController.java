@@ -1,13 +1,13 @@
 package mygroup.questionnaire_star.controller;
 
-import mygroup.questionnaire_star.pojo.Answer;
-import mygroup.questionnaire_star.pojo.AnswerOption;
-import mygroup.questionnaire_star.pojo.Result;
+import mygroup.questionnaire_star.pojo.*;
 import mygroup.questionnaire_star.service.AnswerService;
+import mygroup.questionnaire_star.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -15,6 +15,8 @@ import java.util.List;
 public class AnswerController {
     @Autowired
     AnswerService answerService;
+    @Autowired
+    QuestionService questionService;
 
     //增加一条回答
     @PostMapping("/add")
@@ -61,7 +63,18 @@ public class AnswerController {
     //获取选项计数
     @GetMapping("/calculateOptionStats")
     Result calculateOptionStats(Integer questionId){
+        String type= questionService.getType(questionId);
+        //if(!(type.equals("单选题")||type.equals("多选题")))return Result.error("本题不是选择题");
         List<AnswerOption> stats=answerService.calculateOptionStats(questionId);
         return Result.success(stats);
+    }
+
+    //获取文本题答案
+    @GetMapping("/listAllText")
+    Result listAllText(Integer questionId){
+        String type= questionService.getType(questionId);
+        if(!type.equals("填空题"))return Result.error("本题不是填空题");
+        List<AnswerText> texts=answerService.listAllText(questionId);
+        return Result.success(texts);
     }
 }

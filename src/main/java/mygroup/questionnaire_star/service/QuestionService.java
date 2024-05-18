@@ -14,4 +14,6 @@ public interface QuestionService {
     void delete(Integer questionId);
 
     Question update(Question question);
+
+    String getType(Integer questionId);
 }

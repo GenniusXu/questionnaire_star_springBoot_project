@@ -28,16 +28,12 @@ public class UserController {
         //System.out.println(user);
         if (user != null && user.getPassword().equals(password)) {// 验证成功，创建会话或令牌
 
-
-            // 这里假设有一个方法来创建令牌
-            //String token = createToken(user); // 需要实现的具体令牌创建逻辑
-
-
             // 准备数据返回给客户端
             Map<String, Object> data = new HashMap<>();
             data.put("openid", user.getOpenid());
             data.put("name",user.getName());
 
+            //创建令牌
             String token = JwtUtil.genToken(data);
 
             // 返回成功响应

@@ -19,6 +19,9 @@ public interface QuestionMapper {
     @Delete("delete from question where id=#{id}")
     public void delete(Integer id);
 
+    @Select("SELECT type FROM question WHERE id=#{id}")
+    public String getType(Integer id);
+
     @Update("update question set number=#{number},type=#{type},title=#{title}," +
             "options=#{options} where id=#{id}")
     public void update(Question question);

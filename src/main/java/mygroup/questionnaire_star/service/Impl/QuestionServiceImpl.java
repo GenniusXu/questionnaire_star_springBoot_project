@@ -35,4 +35,10 @@ public class QuestionServiceImpl implements QuestionService {
         questionMapper.update(question);
         return question;
     }
+
+    //获取类型
+    @Override
+    public String getType(Integer questionId) {
+        return questionMapper.getType(questionId);
+    }
 }
