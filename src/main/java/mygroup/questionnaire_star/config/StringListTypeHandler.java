@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 //PS：要把json和什么复杂数据类型互转，就把下面代码中的List<String>全部替换成该复杂数据类型就行，
 //同时别忘了将parseJsonToList私有方法中的return objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));最后两个class改成对应类型的class
+//若有两个或以上TypeHandler，需要在Mapper中用@Result注解来指定为某个字段使用哪个TypeHandler，否则会报错
 
 @MappedTypes(List.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)

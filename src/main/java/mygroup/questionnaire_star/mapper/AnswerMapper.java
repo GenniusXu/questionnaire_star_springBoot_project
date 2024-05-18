@@ -13,7 +13,11 @@ public interface AnswerMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void add(Answer answer);
 
+    //因为现在有两个TypeHandler，所以需要用@Result注解来指定为某个字段使用哪个TypeHandler，否则会报错
     @Select("select * from answer where question_id=#{questionId}")
+    @Results({
+            @Result(property = "selectedOptions", column = "selected_options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     List<Answer> listAllByQuestionId(Integer questionId);
 
     @Select("select * from answer where filler_id=#{fillerId}")
