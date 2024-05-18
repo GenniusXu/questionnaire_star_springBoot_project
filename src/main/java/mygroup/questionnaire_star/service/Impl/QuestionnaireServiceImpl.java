@@ -39,6 +39,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public Questionnaire update(Questionnaire questionnaire) {
         questionnaire.setUpdateTime(LocalDateTime.now());
+        questionnaire.setCreateTime(questionnaireMapper.getQuestionnaireById(questionnaire.getId()).getCreateTime());
         questionnaireMapper.update(questionnaire);
         return questionnaire;
     }

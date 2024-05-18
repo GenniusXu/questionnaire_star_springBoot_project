@@ -20,12 +20,18 @@ public interface AnswerMapper {
     })
     List<Answer> listAllByQuestionId(Integer questionId);
 
+    @Results({
+            @Result(property = "selectedOptions", column = "selected_options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     @Select("select * from answer where filler_id=#{fillerId}")
     List<Answer> listAllByFillerId(String fillerId);
 
     @Delete("delete from answer where id=#{answerId}")
     void deleteByAnswerId(Integer answerId);
 
+    @Results({
+            @Result(property = "selectedOptions", column = "selected_options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     @Update("update answer set question_id=#{questionId},filler_id=#{fillerId},selected_options=#{selectedOptions}," +
             "fill_in_answer=#{fillInAnswer} where id=#{id}")
     void update(Answer answer);

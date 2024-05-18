@@ -9,6 +9,9 @@ import java.util.List;
 public interface QuestionMapper {
 
     @Select("select * from question where questionnaire_id=#{questionnaireId}")
+    @Results({
+            @Result(property = "options", column = "options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     public List<Question> listAll(Integer questionnaireId);
 
     @Insert("insert into question (number,questionnaire_id,type,title,options) " +
@@ -24,8 +27,14 @@ public interface QuestionMapper {
 
     @Update("update question set number=#{number},type=#{type},title=#{title}," +
             "options=#{options} where id=#{id}")
+    @Results({
+            @Result(property = "options", column = "options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     public void update(Question question);
 
     @Select("select * from question where id=#{questionId}")
+    @Results({
+            @Result(property = "options", column = "options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     Question findQuestionById(Integer questionId);
 }
