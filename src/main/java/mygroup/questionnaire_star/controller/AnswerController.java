@@ -1,6 +1,9 @@
 package mygroup.questionnaire_star.controller;
 
-import mygroup.questionnaire_star.pojo.*;
+import mygroup.questionnaire_star.pojo.Answer;
+import mygroup.questionnaire_star.pojo.AnswerOption;
+import mygroup.questionnaire_star.pojo.AnswerText;
+import mygroup.questionnaire_star.pojo.Result;
 import mygroup.questionnaire_star.service.AnswerService;
 import mygroup.questionnaire_star.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ public class AnswerController {
     //增加一条回答
     @PostMapping("/add")
     Result add(@RequestBody Answer answer) {
+        System.out.println(answer);
         answer = answerService.add(answer);
         return Result.success(answer);
     }
@@ -63,9 +67,11 @@ public class AnswerController {
     //获取选项计数
     @GetMapping("/calculateOptionStats")
     Result calculateOptionStats(Integer questionId){
+
         String type= questionService.getType(questionId);
         //if(!(type.equals("单选题")||type.equals("多选题")))return Result.error("本题不是选择题");
         List<AnswerOption> stats=answerService.calculateOptionStats(questionId);
+        System.out.println(stats);
         return Result.success(stats);
     }
 

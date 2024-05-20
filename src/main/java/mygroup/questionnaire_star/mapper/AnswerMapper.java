@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface AnswerMapper {
 
-    @Insert("insert into answer (question_id,filler_id,selected_options,fill_in_answer) " +
-            "values (#{questionId},#{fillerId},#{selectedOptions},#{fillInAnswer})")
+    @Insert("insert into answer (question_id,filler_id,selected_options,fill_in_answer,fileURL) " +
+            "values (#{questionId},#{fillerId},#{selectedOptions},#{fillInAnswer},#{fileURL})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void add(Answer answer);
 
@@ -27,6 +27,7 @@ public interface AnswerMapper {
     void deleteByAnswerId(Integer answerId);
 
     @Update("update answer set question_id=#{questionId},filler_id=#{fillerId},selected_options=#{selectedOptions}," +
-            "fill_in_answer=#{fillInAnswer} where id=#{id}")
+            "fill_in_answer=#{fillInAnswer},fileURL=#{fileURL} where id=#{id}")
     void update(Answer answer);
+
 }
