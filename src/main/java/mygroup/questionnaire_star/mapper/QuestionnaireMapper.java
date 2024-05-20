@@ -13,14 +13,23 @@ public interface QuestionnaireMapper {
     void add(Questionnaire questionnaire);
 
     @Select("SELECT * FROM questionnaire where creator_id=#{creatorId}")
+    @Results({
+            @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     List<Questionnaire> listAll(String creatorId);
 
     @Update("UPDATE questionnaire SET managers_id = #{managersId}, status = #{status}, update_time = #{updateTime} WHERE id = #{id}")
+    @Results({
+            @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     void update(Questionnaire questionnaire);
 
     @Delete("DELETE FROM questionnaire WHERE id = #{id}")
     void delete(Integer id);
 
     @Select("SELECT * FROM questionnaire where id=#{questionnaireId}")
+    @Results({
+            @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     Questionnaire getQuestionnaireById(Integer questionnaireId);
 }
