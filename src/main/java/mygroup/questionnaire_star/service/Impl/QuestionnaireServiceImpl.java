@@ -46,6 +46,12 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     @Override
     public void delete(Integer id) {
+        //在删除问卷前，应当把问卷中的问题也删掉
+        List<Question> questions = questionMapper.listAll(id);
+        for(Question question:questions){
+            questionMapper.delete(question.getId());
+        }
+        //删除问卷
         questionnaireMapper.delete(id);
     }
 
