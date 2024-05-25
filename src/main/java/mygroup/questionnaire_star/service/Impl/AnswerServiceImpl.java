@@ -8,6 +8,7 @@ import mygroup.questionnaire_star.pojo.AnswerOption;
 import mygroup.questionnaire_star.pojo.AnswerText;
 import mygroup.questionnaire_star.pojo.Question;
 import mygroup.questionnaire_star.service.AnswerService;
+import mygroup.questionnaire_star.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,5 +121,10 @@ public class AnswerServiceImpl implements AnswerService {
         List<AnswerText>texts=new ArrayList<>();
         for(Answer answer:answers)texts.add(new AnswerText(questionId,answer.getFillInAnswer()));
         return texts;
+    }
+
+    @Override
+    public Question getQuestion(Answer answer) {
+        return questionMapper.findQuestionById(answer.getQuestionId());
     }
 }

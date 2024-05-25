@@ -1,17 +1,16 @@
 package mygroup.questionnaire_star.controller;
 
-import mygroup.questionnaire_star.pojo.Answer;
-import mygroup.questionnaire_star.pojo.AnswerOption;
-import mygroup.questionnaire_star.pojo.AnswerText;
-import mygroup.questionnaire_star.pojo.Result;
+import mygroup.questionnaire_star.pojo.*;
 import mygroup.questionnaire_star.service.AnswerService;
 import mygroup.questionnaire_star.service.QuestionService;
+import mygroup.questionnaire_star.service.QuestionnaireService;
 import mygroup.questionnaire_star.utils.AliOssUtil;
 import mygroup.questionnaire_star.utils.GsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,10 +23,27 @@ public class AnswerController {
     AnswerService answerService;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    QuestionnaireService questionnaireService;
+
+
 
     //增加一条回答
     @PostMapping("/add")
     Result add(@RequestBody Answer answer) {
+        LocalDateTime now = LocalDateTime.now();
+        Question question = answerService.getQuestion(answer);
+        Questionnaire questionnaire=questionService.getQuestionnaire(question);
+
+        //如果超出最末时间
+        if(questionnaire.getEndTime().isBefore(now)){
+            return Result.error("问卷已经于"+questionnaire.getEndTime()+"结束");
+        }
+        //如果还未开始
+        if(questionnaire.getStartTime().isAfter(now)){
+            return Result.error("问卷还没开始,将于"+questionnaire.getStartTime()+"开始");
+        }
+
         answer = answerService.add(answer);
         return Result.success(answer);
     }
@@ -74,6 +90,18 @@ public class AnswerController {
     //更新一条回答
     @PutMapping("/update")
     Result update(@RequestBody Answer answer) {
+        LocalDateTime now = LocalDateTime.now();
+        Question question = answerService.getQuestion(answer);
+        Questionnaire questionnaire=questionService.getQuestionnaire(question);
+
+        //如果超出最末时间
+        if(questionnaire.getEndTime().isBefore(now)){
+            return Result.error("问卷已经于"+questionnaire.getEndTime()+"结束");
+        }
+        //如果还未开始
+        if(questionnaire.getStartTime().isAfter(now)){
+            return Result.error("问卷还没开始,将于"+questionnaire.getStartTime()+"开始");
+        }
         answer = answerService.update(answer);
         return Result.success(answer);
     }

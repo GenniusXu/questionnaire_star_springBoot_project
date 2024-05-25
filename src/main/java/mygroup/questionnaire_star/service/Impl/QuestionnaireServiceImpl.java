@@ -55,6 +55,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionnaireMapper.delete(id);
     }
 
+    @Override
     public List<Questionnaire> listAllByFillerId(String fillerId) {
         List<Questionnaire> questionnaires = new ArrayList<>();
         List<Answer> answers = answerMapper.listAllByFillerId(fillerId);
@@ -73,4 +74,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         }
         return questionnaires;
     }
+
+    @Override
+    public Questionnaire getById(Integer id) {
+        return questionnaireMapper.getQuestionnaireById(id);
+    }
+
+
 }

@@ -3,6 +3,7 @@ package mygroup.questionnaire_star.service;
 import mygroup.questionnaire_star.pojo.Answer;
 import mygroup.questionnaire_star.pojo.AnswerOption;
 import mygroup.questionnaire_star.pojo.AnswerText;
+import mygroup.questionnaire_star.pojo.Question;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface AnswerService {
     List<AnswerOption>calculateOptionStats(Integer questionId);
 
     List<AnswerText>listAllText(Integer questionId);
+
+    Question getQuestion(Answer answer);
 }

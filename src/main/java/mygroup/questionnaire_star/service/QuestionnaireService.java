@@ -12,4 +12,6 @@ public interface QuestionnaireService {
     Questionnaire update(Questionnaire questionnaire);
     void delete(Integer id);
     public List<Questionnaire> listAllByFillerId(String fillerId);
+
+    Questionnaire getById(Integer id);
 }

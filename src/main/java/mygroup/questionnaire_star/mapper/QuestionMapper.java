@@ -32,6 +32,7 @@ public interface QuestionMapper {
     })
     public void update(Question question);
 
+    //根据id获取问题
     @Select("select * from question where id=#{questionId}")
     @Results({
             @Result(property = "options", column = "options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
