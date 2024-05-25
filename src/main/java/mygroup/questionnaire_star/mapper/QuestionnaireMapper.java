@@ -7,8 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface QuestionnaireMapper {
-    @Insert("INSERT INTO questionnaire (creator_id, managers_id, status, create_time, update_time) VALUES (#{creatorId}, " +
-            "#{managersId}, #{status}, #{createTime}, #{updateTime})")
+    @Insert("INSERT INTO questionnaire (creator_id, managers_id, status, create_time, update_time,start_time,end_time) VALUES (#{creatorId}, " +
+            "#{managersId}, #{status}, #{createTime}, #{updateTime},#{startTime},#{endTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void add(Questionnaire questionnaire);
 
@@ -18,7 +18,7 @@ public interface QuestionnaireMapper {
     })
     List<Questionnaire> listAll(String creatorId);
 
-    @Update("UPDATE questionnaire SET managers_id = #{managersId}, status = #{status}, update_time = #{updateTime} WHERE id = #{id}")
+    @Update("UPDATE questionnaire SET managers_id = #{managersId}, status = #{status}, update_time = #{updateTime},start_time=#{startTime},end_time=#{endTime} WHERE id = #{id}")
     @Results({
             @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
     })
