@@ -51,12 +51,25 @@ public class AnswerController {
         return Result.success(answer);
     }
 
-    /*//增加一条回答（回答中可能带有文件）
-    @PostMapping("/add")
-    Result addAnswerWithFile(@RequestBody Answer answer, @RequestParam("file") MultipartFile file, @RequestParam String fileName) throws Exception {
-        Result res = this.uploadFile(file,fileName);
-        String fileUrl = (String) res.getData();
-        answer.setFileURL(fileUrl);
+    //增加一条回答（回答中可能带有文件）（好像不太行）
+    /*@PostMapping("/add")
+    Result addAnswerWithFile(@RequestParam("file") MultipartFile file, @RequestParam String fileName, @RequestBody Answer answer) throws Exception {
+        //如果前端没有有指定文件名，那就用文件自己本身的文件名
+        if (fileName.isEmpty()) {
+            //在原文件名的基础上加上UUID，保证文件的名字是唯一的,从而防止文件覆盖
+            String originalFilename = file.getOriginalFilename();
+            //fileName = UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
+            fileName = UUID.randomUUID().toString() + originalFilename;
+        }
+        //如果前端有指定文件名，那就按照前端指定的文件名fileName（但要加上扩展名）
+        else {
+            //获取文件扩展名
+            String extension = file.getOriginalFilename().substring(fileName.lastIndexOf(".") + 1);
+            fileName = fileName + "." + extension;
+        }
+        //将文件上传到阿里云，并获取URL
+        String url = AliOssUtil.uploadFile(fileName, file.getInputStream());
+        answer.setFileURL(url);
         answer = answerService.add(answer);
         return Result.success(answer);
     }*/
