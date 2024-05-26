@@ -27,21 +27,27 @@ public class AnswerController {
     QuestionnaireService questionnaireService;
 
 
-
     //增加一条回答
     @PostMapping("/add")
     Result add(@RequestBody Answer answer) {
         LocalDateTime now = LocalDateTime.now();
         Question question = answerService.getQuestion(answer);
-        Questionnaire questionnaire=questionService.getQuestionnaire(question);
+        if (question == null) {
+            return Result.error("无效的问题id");
+        }
+        Questionnaire questionnaire = questionService.getQuestionnaire(question);
+
+        if (questionnaire == null) {
+            return Result.error("无效的问卷id");
+        }
 
         //如果超出最末时间
-        if(questionnaire.getEndTime().isBefore(now)){
-            return Result.error("问卷已经于"+questionnaire.getEndTime()+"结束");
+        if (questionnaire.getEndTime().isBefore(now)) {
+            return Result.error("问卷已经于" + questionnaire.getEndTime() + "结束");
         }
         //如果还未开始
-        if(questionnaire.getStartTime().isAfter(now)){
-            return Result.error("问卷还没开始,将于"+questionnaire.getStartTime()+"开始");
+        if (questionnaire.getStartTime().isAfter(now)) {
+            return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
         if(questionnaire.getStatus()!="已发布"){
             return Result.error("问卷已经停止收集");
@@ -108,15 +114,22 @@ public class AnswerController {
     Result update(@RequestBody Answer answer) {
         LocalDateTime now = LocalDateTime.now();
         Question question = answerService.getQuestion(answer);
-        Questionnaire questionnaire=questionService.getQuestionnaire(question);
+        if (question == null) {
+            return Result.error("无效的问题id");
+        }
+        Questionnaire questionnaire = questionService.getQuestionnaire(question);
+
+        if (questionnaire == null) {
+            return Result.error("无效的问卷id");
+        }
 
         //如果超出最末时间
-        if(questionnaire.getEndTime().isBefore(now)){
-            return Result.error("问卷已经于"+questionnaire.getEndTime()+"结束");
+        if (questionnaire.getEndTime().isBefore(now)) {
+            return Result.error("问卷已经于" + questionnaire.getEndTime() + "结束");
         }
         //如果还未开始
-        if(questionnaire.getStartTime().isAfter(now)){
-            return Result.error("问卷还没开始,将于"+questionnaire.getStartTime()+"开始");
+        if (questionnaire.getStartTime().isAfter(now)) {
+            return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
         if(questionnaire.getStatus()!="已发布"){
             return Result.error("问卷已经停止收集");
