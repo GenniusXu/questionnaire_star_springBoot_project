@@ -4,6 +4,7 @@ import mygroup.questionnaire_star.mapper.UserMapper;
 import mygroup.questionnaire_star.pojo.Result;
 import mygroup.questionnaire_star.pojo.User;
 import mygroup.questionnaire_star.service.UserService;
+import mygroup.questionnaire_star.utils.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setPhoneNumber(String openid, String phoneNumber) {
         userMapper.setPhoneNumber(openid,phoneNumber);
+    }
+
+    @Override
+    public String setOpenid(User user) {
+        String openid= RandomUtil.generateRandomCode(16);
+        userMapper.setOpenid(user.getName(),openid);
+        return openid;
     }
 }

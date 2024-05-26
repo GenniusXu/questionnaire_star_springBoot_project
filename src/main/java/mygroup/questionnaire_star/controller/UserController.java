@@ -32,18 +32,18 @@ public class UserController {
             Map<String, Object> data = new HashMap<>();
             data.put("openid", user.getOpenid());
             data.put("name",user.getName());
+            data.put("password",user.getPassword());
 
             //创建令牌
-            String token = JwtUtil.genToken(data);
+            //String token = JwtUtil.genToken(data);
 
             // 返回成功响应
-            return Result.success(token);
+            return Result.success(user.getOpenid());
         } else {
             // 验证失败，返回错误信息
             return Result.error("用户名或密码错误");
         }
     }
-
     // 假设的令牌创建方法，需要根据实际情况实现
     private String createToken(User user) {
         // 创建令牌的逻辑
@@ -65,7 +65,8 @@ public class UserController {
         User temUser=userService.findUserByName(user.getName());
         if(temUser!=null)return Result.error("The username has been registered");
         userService.add(user);
-        return Result.success();
+        String openid=userService.setOpenid(user);
+        return Result.success(openid);
     }
 
     //根据openid查询用户
@@ -74,6 +75,7 @@ public class UserController {
         return userService.findUserByOpenid(openid);
     }
 
+    //根据名字查询用户
     @GetMapping("/searchByName")
     public User searchByName(@RequestParam String name){return userService.findUserByName(name);}
 

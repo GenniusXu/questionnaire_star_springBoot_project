@@ -15,8 +15,8 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE name=#{name}")
     User findUserByName(String name);
 
-    @Insert("INSERT INTO user (openid,name,createTime,updateTime,password)" +
-            "VALUES (#{openid},#{name},NOW(), NOW(),#{password})")
+    @Insert("INSERT INTO user (name,createTime,updateTime,password)" +
+            "VALUES (#{name},NOW(), NOW(),#{password})")
     void add(User user);
 
     // 根据OpenID删除用户
@@ -28,4 +28,7 @@ public interface UserMapper {
 
     @Update("UPDATE user SET phoneNumber=#{phoneNumber} WHERE openid=#{openid}")
     void setPhoneNumber(String openid, String phoneNumber);
+
+    @Update("UPDATE user SET openid=#{openid} WHERE name=#{name}")
+    void setOpenid(String name, String openid);
 }

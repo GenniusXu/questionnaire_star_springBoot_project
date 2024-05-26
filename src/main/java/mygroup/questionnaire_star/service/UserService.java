@@ -21,4 +21,5 @@ public interface UserService {
     //设置用户手机
     void setPhoneNumber(String openid,String phoneNumber);
 
+    String setOpenid(User user);
 }
