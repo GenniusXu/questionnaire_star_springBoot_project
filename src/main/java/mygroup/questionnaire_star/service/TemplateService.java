@@ -17,4 +17,8 @@ public interface TemplateService {
     List<QTemplate> getTemplatesByName(String name);
 
     QTemplate getTemplateById(Integer templateId);
+
+    List<String> listAllName();
+
+    List<QTemplate> getRelativeTemplatesByName(String name);
 }

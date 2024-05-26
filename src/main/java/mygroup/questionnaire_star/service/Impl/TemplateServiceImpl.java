@@ -52,4 +52,16 @@ public class TemplateServiceImpl implements TemplateService {
         QTemplate template = templateMapper.getTemplateById(templateId);
         return template;
     }
+
+    @Override
+    public List<String> listAllName() {
+        List<String> names = templateMapper.listAllName();
+        return names;
+    }
+
+    @Override
+    public List<QTemplate> getRelativeTemplatesByName(String name) {
+        List<QTemplate> templates = templateMapper.getRelativeTemplatesByName(name);
+        return templates;
+    }
 }

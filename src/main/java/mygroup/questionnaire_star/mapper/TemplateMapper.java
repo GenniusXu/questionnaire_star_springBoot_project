@@ -34,4 +34,10 @@ public interface TemplateMapper {
     })
     @Select("SELECT * from template WHERE id=#{templateId};")
     QTemplate getTemplateById(Integer templateId);
+
+    @Select("SELECT name from template")
+    List<String> listAllName();
+
+    @Select("SELECT * FROM template WHERE name LIKE CONCAT('%', #{name}, '%') ;")
+    List<QTemplate> getRelativeTemplatesByName(String name);
 }
