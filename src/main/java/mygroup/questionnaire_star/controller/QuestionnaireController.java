@@ -6,6 +6,7 @@ import mygroup.questionnaire_star.service.QuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -44,9 +45,27 @@ public class QuestionnaireController {
     }
 
     //列出填写者填写过的所有问卷
-    @GetMapping("listAllByFillerId")
+    @GetMapping("/listAllByFillerId")
     public Result listAllByFillerId(String fillerId){
         List<Questionnaire> questionnaires = questionnaireService.listAllByFillerId(fillerId);
         return Result.success(questionnaires);
+    }
+
+    @GetMapping("/getTimeStatus")
+    public Result getStatus(@RequestParam Integer id){
+        Questionnaire questionnaire=questionnaireService.getById(id);
+        LocalDateTime now=LocalDateTime.now();
+        //如果超出最末时间
+        if (questionnaire.getEndTime().isBefore(now)) {
+            return Result.error("问卷已经于" + questionnaire.getEndTime() + "结束");
+        }
+        //如果还未开始
+        if (questionnaire.getStartTime().isAfter(now)) {
+            return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
+        }
+        if(!questionnaire.getStatus().equals("已发布")){
+            return Result.error("问卷已经停止收集");
+        }
+        return Result.success("问卷可填写");
     }
 }

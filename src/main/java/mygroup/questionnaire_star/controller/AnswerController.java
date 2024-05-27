@@ -49,7 +49,7 @@ public class AnswerController {
         if (questionnaire.getStartTime().isAfter(now)) {
             return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
-        if(questionnaire.getStatus()!="已发布"){
+        if(!questionnaire.getStatus().equals("已发布")){
             return Result.error("问卷已经停止收集");
         }
 
@@ -131,7 +131,7 @@ public class AnswerController {
         if (questionnaire.getStartTime().isAfter(now)) {
             return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
-        if(questionnaire.getStatus()!="已发布"){
+        if(!questionnaire.getStatus().equals("已发布")){
             return Result.error("问卷已经停止收集");
         }
 
