@@ -22,6 +22,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByPhone(String phone) {
+        return userMapper.findUserByPhone(phone);
+    }
+
+    @Override
     public User findUserByOpenid(String openid) {
         return userMapper.findUserByOpenid(openid);
     }

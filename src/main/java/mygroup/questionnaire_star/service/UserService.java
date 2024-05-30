@@ -8,6 +8,7 @@ public interface UserService {
 
     public void updateUser(User user);
 
+    User findUserByPhone(String phone);
     User findUserByOpenid(String openid);
     User findUserByName(String name);
 

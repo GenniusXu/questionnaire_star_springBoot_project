@@ -26,3 +26,9 @@ mybatis:
 # 设置SpringBoot监听端口号为8080
 server:
   port: 8080
+
+#redis
+redis:
+  host: localhost # 或者是Redis服务器的IP地址
+  port: 6379     # Redis端口，默认为6379
+  password: your-redis-password  # 如果设置了密码，在这里填写

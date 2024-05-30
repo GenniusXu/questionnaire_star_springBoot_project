@@ -40,7 +40,7 @@ public class MessageController {
 
         if(isSend) {
             //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
-            redisTemplate.opsForValue().set(phone, code,5, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(phone, code,30, TimeUnit.MINUTES);
             return true;
         } else {
             return false;

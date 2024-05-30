@@ -15,6 +15,9 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE name=#{name}")
     User findUserByName(String name);
 
+    @Select("SELECT * FROM user WHERE phoneNumber=#{phoneNumber}")
+    User findUserByPhone(String phoneNumber);
+
     @Insert("INSERT INTO user (name,createTime,updateTime,password)" +
             "VALUES (#{name},NOW(), NOW(),#{password})")
     void add(User user);
@@ -34,4 +37,6 @@ public interface UserMapper {
 
     @Update("UPDATE user SET captcha=#{captcha} WHERE phoneNumber=#{phoneNumber}")
     void setCaptcha(String captcha,String phoneNumber);
+
+
 }

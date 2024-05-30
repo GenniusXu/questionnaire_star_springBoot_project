@@ -6,6 +6,7 @@ import mygroup.questionnaire_star.pojo.User;
 import mygroup.questionnaire_star.service.UserService;
 import mygroup.questionnaire_star.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     // 用户登录
     @PostMapping("/Login")
@@ -88,9 +91,34 @@ public class UserController {
 
     //设置密码
     @PostMapping("/setPassword")
-    public Result setPassword(String openid,String password){
+    public Result setPassword(@RequestParam String phone,@RequestParam String password,@RequestParam String code){
+        User user = userService.findUserByPhone(phone);
+        if(user==null){
+            return Result.error("该手机号未创建用户！");
+        }
+
+        // 从Redis中获取存储的验证码
+        String savedCode = redisTemplate.opsForValue().get(phone);
+
+        // 检查Redis中是否有保存的验证码
+        if (savedCode == null) {
+            // 验证码不存在，可能是用户未请求验证码或验证码已过期
+            return Result.error("验证码不存在或已过期，请重新获取验证码后再试！");
+        }
+
+        // 验证码存在，进行比对
+        if (!savedCode.equals(code)) {
+            // 提交的验证码与存储的验证码不匹配
+            return Result.error("验证码错误，请重新输入！");
+        }
+
+        String openid = user.getOpenid();
         userService.setPassword(openid,password);
-        return Result.success(password);
+
+        // 验证成功后，从Redis中删除验证码
+        redisTemplate.delete(phone);
+
+        return Result.success("密码设置成功为"+password);
     }
 
     //设置手机
