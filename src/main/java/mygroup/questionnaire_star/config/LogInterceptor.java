@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class LogInterceptor implements HandlerInterceptor {
 
@@ -23,6 +26,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
         // 记录日志
         System.out.println("[" + request.getMethod() + "]" + request.getRequestURI());
+        System.out.println("Request time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         System.out.println("executed in " + executeTime + "ms");
         System.out.println("Requester IP: " + request.getRemoteAddr());
         System.out.println("Response Status: " + response.getStatus());
