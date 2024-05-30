@@ -14,4 +14,6 @@ public interface QuestionnaireService {
     public List<Questionnaire> listAllByFillerId(String fillerId);
 
     Questionnaire getById(Integer id);
+
+    Questionnaire getQuestionnaireById(Integer questionnaireid);
 }

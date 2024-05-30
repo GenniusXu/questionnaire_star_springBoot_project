@@ -24,6 +24,12 @@ public class QuestionController {
         return Result.success(questions);
     }
 
+    @GetMapping("/getQuestionById")
+    Result getQuestionById(@RequestParam Integer questionId){
+        Question question = questionService.getQuestionById(questionId);
+        return Result.success(question);
+    }
+
     //添加问题
     @PostMapping("/add")
     Result add(@RequestBody Question question){

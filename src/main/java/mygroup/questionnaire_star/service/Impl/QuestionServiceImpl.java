@@ -51,4 +51,10 @@ public class QuestionServiceImpl implements QuestionService {
     public Questionnaire getQuestionnaire(Question question) {
         return questionnaireMapper.getQuestionnaireById(question.getQuestionnaireId());
     }
+
+    @Override
+    public Question getQuestionById(Integer questionId) {
+        Question question = questionMapper.findQuestionById(questionId);
+        return question;
+    }
 }

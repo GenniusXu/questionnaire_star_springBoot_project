@@ -27,6 +27,11 @@ public class AnswerController {
     @Autowired
     QuestionnaireService questionnaireService;
 
+    @GetMapping("/getAnswerById")
+    Result getAnswerById(@RequestParam Integer answerId){
+        Answer answer = answerService.getAnswerById(answerId);
+        return Result.success(answer);
+    }
 
     //增加一条回答
     @PostMapping("/add")
@@ -50,7 +55,7 @@ public class AnswerController {
         if (questionnaire.getStartTime().isAfter(now)) {
             return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
-        if(!questionnaire.getStatus().equals("已发布")){
+        if (!questionnaire.getStatus().equals("已发布")) {
             return Result.error("问卷已经停止收集");
         }
 
@@ -132,7 +137,7 @@ public class AnswerController {
         if (questionnaire.getStartTime().isAfter(now)) {
             return Result.error("问卷还没开始,将于" + questionnaire.getStartTime() + "开始");
         }
-        if(!questionnaire.getStatus().equals("已发布")){
+        if (!questionnaire.getStatus().equals("已发布")) {
             return Result.error("问卷已经停止收集");
         }
 
@@ -155,16 +160,19 @@ public class AnswerController {
     @GetMapping("/calculateAllOptionStats")
     Result calculateAllOptionStats(Integer questionnaireId) {
 
-        Questionnaire questionnaire=questionnaireService.getById(questionnaireId);
-        List<Question> questions=questionService.listAll(questionnaireId);
+        Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+        List<Question> questions = questionService.listAll(questionnaireId);
         System.out.println(questions);
         List<List<AnswerOption>> allstats = new ArrayList<>();
-        for(Question question:questions){
+        for (Question question : questions) {
             String type = question.getType();
-            Integer questionId=question.getId();
-            if(type.equals("单选题")||type.equals("多选题")){
+            Integer questionId = question.getId();
+            if (type.equals("单选题") || type.equals("多选题")) {
                 List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
-                allstats.add(stats);
+                //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
+                if(!stats.isEmpty()){
+                    allstats.add(stats);
+                }
             }
 
         }
@@ -172,6 +180,7 @@ public class AnswerController {
         System.out.println(allstats);
         return Result.success(allstats);
     }
+
     //获取文本题答案
     @GetMapping("/listAllText")
     Result listAllText(Integer questionId) {
@@ -179,6 +188,38 @@ public class AnswerController {
         if (!type.equals("填空题")) return Result.error("本题不是填空题");
         List<AnswerText> texts = answerService.listAllText(questionId);
         return Result.success(texts);
+    }
+
+    //获取所有类型回答的数据分析（包括单选、多选、填空）
+    @GetMapping("/getAllTypeResultStats")
+    Result getAllTypeResultStats(@RequestParam Integer questionnaireId) {
+        Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+        List<Question> questions = questionService.listAll(questionnaireId);
+        System.out.println(questions);
+        List<List<AnswerOption>> allOptionStats = new ArrayList<>();
+        List<List<AnswerText>> allTextStats = new ArrayList<>();
+        // 创建一个类型为 Object 的 ArrayList 来保存合并后的结果
+        ArrayList<Object> AllTypeResultStats = new ArrayList<Object>();
+        for (Question question : questions) {
+            String type = question.getType();
+            Integer questionId = question.getId();
+            if (type.equals("单选题") || type.equals("多选题")) {
+                List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
+                //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
+                if(!stats.isEmpty()){
+                    allOptionStats.add(stats);
+                }
+            } else if (type.equals("填空题")) {
+                List<AnswerText> texts = answerService.listAllText(questionId);
+                //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
+                if(!texts.isEmpty()){
+                    allTextStats.add(texts);
+                }
+            }
+        }
+        AllTypeResultStats.addAll(allOptionStats);
+        AllTypeResultStats.addAll(allTextStats);
+        return Result.success(AllTypeResultStats);
     }
 
     @PostMapping("/upload_file")

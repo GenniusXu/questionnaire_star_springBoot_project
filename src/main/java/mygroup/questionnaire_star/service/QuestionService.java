@@ -19,4 +19,6 @@ public interface QuestionService {
     String getType(Integer questionId);
 
     Questionnaire getQuestionnaire(Question question);
+
+    Question getQuestionById(Integer questionId);
 }

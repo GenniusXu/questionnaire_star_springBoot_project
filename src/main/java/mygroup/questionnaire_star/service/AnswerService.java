@@ -28,4 +28,6 @@ public interface AnswerService {
     List<AnswerText>listAllText(Integer questionId);
 
     Question getQuestion(Answer answer);
+
+    Answer getAnswerById(Integer answerId);
 }

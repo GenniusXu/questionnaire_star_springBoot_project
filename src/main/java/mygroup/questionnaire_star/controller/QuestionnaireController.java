@@ -23,6 +23,12 @@ public class QuestionnaireController {
         return Result.success(questionnaire);
     }
 
+    @GetMapping("/getQuestionnaireById")
+    public Result getQuestionnaireById(@RequestParam Integer questionnaireid) {
+        Questionnaire questionnaire = questionnaireService.getQuestionnaireById(questionnaireid);
+        return Result.success(questionnaire);
+    }
+
     //列出某一用户创建的所有问卷
     @GetMapping("/listAllByCreatorId")
     public Result listAll(@RequestParam String creatorId) {

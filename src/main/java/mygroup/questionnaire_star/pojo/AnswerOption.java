@@ -6,6 +6,7 @@ import lombok.Data;
 public class AnswerOption {
 
     private Integer questionId;  // 问题ID
+    private String type = "选择题";   //为了给前端判断而加的，直接写死就行
     private String optionText;   // 选项内容
     private Integer count;       // 被选择的次数
     private Double rate;         // 选择比例

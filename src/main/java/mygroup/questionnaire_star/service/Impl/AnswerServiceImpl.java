@@ -95,9 +95,13 @@ public class AnswerServiceImpl implements AnswerService {
         // 使用Map来统计每个选项的出现次数
         Map<String, Integer> optionCountMap = new HashMap<>();
 
-        // 遍历所有回答，统计每个单独选项的出现次数
+        // 遍历所有回答，如果是选择题的回答，统计每个单独选项的出现次数
         for (Answer answer : answers) {
             List<String> selectedOptions = answer.getSelectedOptions();
+            //选择的选项为空，说明不是选择题的答案，跳过
+            if(selectedOptions==null || selectedOptions.isEmpty()){
+                continue;
+            }
             for (String option : selectedOptions) {
                 optionCountMap.put(option, optionCountMap.getOrDefault(option, 0) + 1);//如果选项不存在，默认值设为0，然后加1
             }
@@ -118,13 +122,24 @@ public class AnswerServiceImpl implements AnswerService {
     public List<AnswerText> listAllText(Integer questionId) {
         List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
         int answerTotalCount = answers.size(); // 计算回答的总数
-        List<AnswerText>texts=new ArrayList<>();
-        for(Answer answer:answers)texts.add(new AnswerText(questionId,answer.getFillInAnswer()));
+        List<AnswerText> texts = new ArrayList<>();
+        for (Answer answer : answers){
+            //填空题内的回答不为空，说明是填空题，才往texts里塞
+            if(!answer.getFillInAnswer().isEmpty()){
+                texts.add(new AnswerText(questionId, answer.getFillInAnswer()));
+            }
+        }
         return texts;
     }
 
     @Override
     public Question getQuestion(Answer answer) {
         return questionMapper.findQuestionById(answer.getQuestionId());
+    }
+
+    @Override
+    public Answer getAnswerById(Integer answerId) {
+        Answer answer = answerMapper.getAnswerById(answerId);
+        return answer;
     }
 }

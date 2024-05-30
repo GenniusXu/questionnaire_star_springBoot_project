@@ -80,5 +80,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaireMapper.getQuestionnaireById(id);
     }
 
+    @Override
+    public Questionnaire getQuestionnaireById(Integer questionnaireid) {
+        Questionnaire questionnaire = questionnaireMapper.getQuestionnaireById(questionnaireid);
+        return questionnaire;
+    }
+
 
 }

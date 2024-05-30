@@ -36,4 +36,9 @@ public interface AnswerMapper {
             "fill_in_answer=#{fillInAnswer},fileURL=#{fileURL} where id=#{id}")
     void update(Answer answer);
 
+    @Results({
+            @Result(property = "selectedOptions", column = "selected_options", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
+    @Select("select * from answer where id=#{answerId};")
+    Answer getAnswerById(Integer answerId);
 }
