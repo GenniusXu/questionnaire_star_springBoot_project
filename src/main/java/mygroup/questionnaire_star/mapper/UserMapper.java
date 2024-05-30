@@ -31,4 +31,7 @@ public interface UserMapper {
 
     @Update("UPDATE user SET openid=#{openid} WHERE name=#{name}")
     void setOpenid(String name, String openid);
+
+    @Update("UPDATE user SET captcha=#{captcha} WHERE phoneNumber=#{phoneNumber}")
+    void setCaptcha(String captcha,String phoneNumber);
 }

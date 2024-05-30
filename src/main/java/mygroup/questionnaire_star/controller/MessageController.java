@@ -1,29 +1,51 @@
 package mygroup.questionnaire_star.controller;
 
-import mygroup.questionnaire_star.utils.AliMessageUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.aliyun.sdk.service.dysmsapi20170525.models.SendSmsResponse;
+import mygroup.questionnaire_star.service.MsmService;
+import mygroup.questionnaire_star.utils.RandomUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import mygroup.questionnaire_star.pojo.Result;
 
+import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
 public class MessageController {
-    @PostMapping("/sendSms")
-    public Result sendSms(@RequestParam("phoneNumber") String phoneNumber,
-                          @RequestParam("templateCode") String templateCode,
-                          @RequestParam("signName") String signName,
-                          @RequestParam("templateParam") String templateParam) {
-        try {
-            // 调用工具类发送短信
-            AliMessageUtil.sendSms(phoneNumber, templateCode, signName, templateParam);
-            return Result.success("短信发送成功");
-        } catch (Exception e) {
-            // 记录日志或处理异常
-            e.printStackTrace();
-            return Result.error("短信发送失败：" + e.getMessage());
+
+
+    @Autowired
+    private MsmService msmService;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    @GetMapping(value = "/send/{phone}")
+    public Boolean code(@RequestParam String phone) {
+        //1、从redis中获取验证码，如果获取到就直接返回
+        String code = redisTemplate.opsForValue().get(phone);
+        if(!code.isEmpty()) return false;
+
+        //2、如果获取不到，就进行阿里云发送
+        code = RandomUtil.generateRandomCode(6);//生成验证码的随机值
+        Map<String,Object> param = new HashMap<>();
+        param.put("code", code);
+        //调用方法
+        boolean isSend = msmService.send(param,phone);
+
+        if(isSend) {
+            //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
+            redisTemplate.opsForValue().set(phone, code,5, TimeUnit.MINUTES);
+            return true;
+        } else {
+            return false;
         }
     }
+
+
 }

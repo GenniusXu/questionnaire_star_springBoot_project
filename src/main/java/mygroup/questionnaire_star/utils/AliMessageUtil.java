@@ -32,8 +32,9 @@ public class AliMessageUtil {
     private static final String ACCESS_KEY_ID = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID");
     private static final String ACCESS_KEY_SECRET = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET");
 
-    public static void sendSms(String phoneNumber, String templateCode, String signName, String templateParam){
-        try{
+    public static SendSmsResponse sendSms(String phoneNumber, String templateCode, String signName, String templateParam) {
+        SendSmsResponse resp = null ;
+        try {
             // Configure Credentials authentication information, including ak, secret, token
             StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
                     // Please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET are set.
@@ -66,11 +67,13 @@ public class AliMessageUtil {
                     .build();
 
             CompletableFuture<SendSmsResponse> response = client.sendSms(request);
-            SendSmsResponse resp = response.get();
+            resp = response.get();
             System.out.println(new Gson().toJson(resp));
             client.close();
-        }catch (Exception e){
+            return resp;
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return resp;
     }
 }

@@ -1,6 +1,7 @@
 package mygroup.questionnaire_star.utils;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class RandomUtil {
 
@@ -17,5 +18,16 @@ public class RandomUtil {
             randomCode.append(CHAR_SET.charAt(RANDOM.nextInt(charSetLength)));
         }
         return randomCode.toString();
+    }
+
+    public static String buildCheckCode(int digit){
+        String str = "0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < digit; i++) {
+            char ch = str.charAt(random.nextInt(str.length()));
+            sb.append(ch);
+        }
+        return sb.toString();
     }
 }

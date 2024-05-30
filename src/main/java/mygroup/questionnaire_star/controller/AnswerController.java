@@ -38,6 +38,7 @@ public class AnswerController {
     Result add(@RequestBody Answer answer) {
         LocalDateTime now = LocalDateTime.now();
         Question question = answerService.getQuestion(answer);
+
         if (question == null) {
             return Result.error("无效的问题id");
         }
@@ -45,6 +46,14 @@ public class AnswerController {
 
         if (questionnaire == null) {
             return Result.error("无效的问卷id");
+        }
+
+        if(questionnaire.getStartTime()==null){
+            return Result.error("未设置开始时间");
+        }
+
+        if(questionnaire.getEndTime()==null){
+            return Result.error("未设置结束时间");
         }
 
         //如果超出最末时间
@@ -120,6 +129,7 @@ public class AnswerController {
     Result update(@RequestBody Answer answer) {
         LocalDateTime now = LocalDateTime.now();
         Question question = answerService.getQuestion(answer);
+
         if (question == null) {
             return Result.error("无效的问题id");
         }
@@ -127,6 +137,14 @@ public class AnswerController {
 
         if (questionnaire == null) {
             return Result.error("无效的问卷id");
+        }
+
+        if(questionnaire.getStartTime()==null){
+            return Result.error("未设置开始时间");
+        }
+
+        if(questionnaire.getEndTime()==null){
+            return Result.error("未设置结束时间");
         }
 
         //如果超出最末时间
