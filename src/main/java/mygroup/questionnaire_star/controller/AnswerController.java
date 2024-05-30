@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -150,6 +151,27 @@ public class AnswerController {
         return Result.success(stats);
     }
 
+    //分析整个问卷的选择题
+    @GetMapping("/calculateAllOptionStats")
+    Result calculateAllOptionStats(Integer questionnaireId) {
+
+        Questionnaire questionnaire=questionnaireService.getById(questionnaireId);
+        List<Question> questions=questionService.listAll(questionnaireId);
+        System.out.println(questions);
+        List<List<AnswerOption>> allstats = new ArrayList<>();
+        for(Question question:questions){
+            String type = question.getType();
+            Integer questionId=question.getId();
+            if(type.equals("单选题")||type.equals("多选题")){
+                List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
+                allstats.add(stats);
+            }
+
+        }
+
+        System.out.println(allstats);
+        return Result.success(allstats);
+    }
     //获取文本题答案
     @GetMapping("/listAllText")
     Result listAllText(Integer questionId) {
@@ -179,4 +201,6 @@ public class AnswerController {
         //String url = "http://模拟url";
         return Result.success(url);
     }
+
+
 }
