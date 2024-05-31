@@ -1,16 +1,26 @@
 package mygroup.questionnaire_star.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.auth.credentials.Credential;
+import com.aliyun.auth.credentials.provider.StaticCredentialProvider;
+import com.aliyun.sdk.service.dysmsapi20170525.AsyncClient;
+import com.aliyun.sdk.service.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.sdk.service.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
+import com.google.gson.Gson;
+import darabonba.core.client.ClientOverrideConfiguration;
 import mygroup.questionnaire_star.service.MsmService;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -22,38 +32,76 @@ public class MsmServiceImpl implements MsmService {
      * @return
      */
 
-    private String templateCode = "SMS_467510333";
-    private String signName = "问卷cloud";
-    private String templateParam = "code";
-    private String regionId = "cn-hangzhou";
+    private static final Logger logger = LoggerFactory.getLogger(MsmService.class);
+
+    private String templateCode = "SMS_467595365";
+    private String signName = "问卷系统";
+    private String regionId = "cn-shenzhen";
     private String endpoint = "dysmsapi.aliyuncs.com";
-    private String accessKeyId = "LTAI5t9RKoPuj1crBdFZCjsC"; // 请确保不要在代码中硬编码你的密钥
-    private String accessKeySecret = "9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8"; // 请确保不要在代码中硬编码你的密钥
+    private String accessKeyId = "LTAI5tDK74j6uEX1cVk1ArLH"; // 请确保不要在代码中硬编码你的密钥
+    private String accessKeySecret = "XAALjBCGzeOk9kDp0qMdQsiUYKn8aR"; // 请确保不要在代码中硬编码你的密钥
+    //1旧的
+//    private static final String ACCESS_KEY_ID="LTAI5tDK74j6uEX1cVk1ArLH";
+//    private static final String ACCESS_KEY_SECRET="XAALjBCGzeOk9kDp0qMdQsiUYKn8aR";
+
+    //2新的
+//    private String accessKeyId = "LTAI5t9RKoPuj1crBdFZCjsC"; // 请确保不要在代码中硬编码你的密钥
+//    private String accessKeySecret = "9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8"; // 请确保不要在代码中硬编码你的密钥
 
 
     @Override
-    public boolean send(Map<String, Object> param, String phone) {
+    public Boolean send(Map<String, Object> param, String phone) {
 
+        SendSmsResponse resp = null ;
         if(phone.isEmpty()) return false;
 
-        //default 地域节点，默认就好  后面是 阿里云的 id和秘钥（这里记得去阿里云复制自己的id和秘钥哦）
-        DefaultProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessKeySecret);
-        IAcsClient client = new DefaultAcsClient(profile);
+        // Configure Credentials authentication information, including ak, secret, token
+        StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
+                // Please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET are set.
+                .accessKeyId(accessKeyId)
+                .accessKeySecret(accessKeySecret)
+                //.securityToken(System.getenv("ALIBABA_CLOUD_SECURITY_TOKEN")) // use STS token
+                .build());
 
-        //这里不能修改
-        CommonRequest request = new CommonRequest();
+        AsyncClient client = AsyncClient.builder()
+                .region(regionId) // Region ID
+                //.httpClient(httpClient) // Use the configured HttpClient, otherwise use the default HttpClient (Apache HttpClient)
+                .credentialsProvider(provider)
+                //.serviceConfiguration(Configuration.create()) // Service-level configuration
+                // Client-level configuration rewrite, can set Endpoint, Http request parameters, etc.
+                .overrideConfiguration(
+                        ClientOverrideConfiguration.create()
+                                // Endpoint 请参考 https://api.aliyun.com/product/Dysmsapi
+                                .setEndpointOverride(endpoint)
+                        //.setConnectTimeout(Duration.ofSeconds(30))
+                )
+                .build();
 
-        request.putQueryParameter("PhoneNumbers", phone);                    //手机号
-        request.putQueryParameter("SignName", signName);    //申请阿里云 签名名称（暂时用阿里云测试的，自己还不能注册签名）
-        request.putQueryParameter("TemplateCode", templateCode); //申请阿里云 模板code（用的也是阿里云测试的）
-        request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));
+        String jsonString = "{\"code\":\""+param.get("code")+"\"}";
+        SendSmsRequest request = SendSmsRequest.builder()
+                .signName(signName)
+                .templateCode(templateCode)
+                .phoneNumbers(phone)
+                .templateParam(jsonString)
+                // Request-level configuration rewrite, can set Http request parameters, etc.
+                // .requestConfiguration(RequestConfiguration.create().setHttpHeaders(new HttpHeaders()))
+                .build();
 
         try {
-            CommonResponse response = client.getCommonResponse(request);
-            System.out.println(response.getData());
-            return response.getHttpResponse().isSuccess();
+
+            CompletableFuture<SendSmsResponse> response = client.sendSms(request);
+            resp = response.get();
+            System.out.println(new Gson().toJson(resp));
+            client.close();
+            return true;
+
         } catch (Exception e) {
+            System.out.println(e);
             e.printStackTrace();
+        }finally {
+            if (client != null) {
+                client.close();
+            }
         }
         return false;
     }

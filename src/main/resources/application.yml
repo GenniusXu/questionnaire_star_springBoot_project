@@ -5,15 +5,21 @@ spring:
     url: jdbc:mysql://8.134.128.39:3306/questionnaire_star
     username: root
     password: Sixu20040230@
-
-message:
-  templateCode: SMS_467510333
-  signName: 问卷cloud
-  templateParam: code
-  regionId: cn-hangzhou
-  endpoint: dysmsapi.aliyuncs.com
-  accessKeyId: LTAI5t9RKoPuj1crBdFZCjsC  # 从环境变量中获取
-  accessKeySecret: 9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8  # 从环境变量中获取
+  message:
+    templateCode: SMS_467510333
+    signName: 问卷cloud
+    templateParam: code
+    regionId: cn-hangzhou
+    endpoint: dysmsapi.aliyuncs.com
+    accessKeyId: LTAI5t9RKoPuj1crBdFZCjsC  # 从环境变量中获取
+    accessKeySecret: 9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8  # 从环境变量中获取
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 5000
+      password: root@123456
 
 
 # 开启驼峰命名和下划线命名的自动转换（这样才能将pojo类中的字段名与MySQL中的字段名相匹配）
@@ -28,7 +34,4 @@ server:
   port: 8080
 
 #redis
-redis:
-  host: localhost # 或者是Redis服务器的IP地址
-  port: 6379     # Redis端口，默认为6379
-  password: your-redis-password  # 如果设置了密码，在这里填写
+

@@ -29,8 +29,8 @@ public class AliMessageUtil {
 
     private static final String REGION_ID = "cn-hangzhou";
     private static final String ENDPOINT = "dysmsapi.aliyuncs.com";
-    private static final String ACCESS_KEY_ID = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID");
-    private static final String ACCESS_KEY_SECRET = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET");
+    private static final String ACCESS_KEY_ID = System.getenv("LTAI5t9RKoPuj1crBdFZCjsC");
+    private static final String ACCESS_KEY_SECRET = System.getenv("9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8");
 
     public static SendSmsResponse sendSms(String phoneNumber, String templateCode, String signName, String templateParam) {
         SendSmsResponse resp = null ;

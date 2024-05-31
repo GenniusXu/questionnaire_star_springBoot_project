@@ -16,6 +16,7 @@ import java.util.Map;
 
 
 @RestController
+@RequestMapping("/Message")
 public class MessageController {
 
 
@@ -25,16 +26,17 @@ public class MessageController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @GetMapping(value = "/send/{phone}")
-    public Boolean code(@RequestParam String phone) {
+    @GetMapping(value = "/send")
+    public Boolean send(@RequestParam String phone) {
         //1、从redis中获取验证码，如果获取到就直接返回
         String code = redisTemplate.opsForValue().get(phone);
-        if(!code.isEmpty()) return false;
+//        if(code!=null) return false;
 
         //2、如果获取不到，就进行阿里云发送
-        code = RandomUtil.generateRandomCode(6);//生成验证码的随机值
+        code = RandomUtil.buildCheckCode(6);//生成验证码的随机值
         Map<String,Object> param = new HashMap<>();
         param.put("code", code);
+        System.out.println(param);
         //调用方法
         boolean isSend = msmService.send(param,phone);
 

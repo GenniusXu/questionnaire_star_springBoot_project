@@ -6,5 +6,5 @@ import java.util.Map;
 
 @Service
 public interface MsmService {
-    boolean send(Map<String, Object> param, String phone);
+    Boolean send(Map<String, Object> param, String phone);
 }
