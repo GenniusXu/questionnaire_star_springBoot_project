@@ -99,19 +99,21 @@ public class AnswerServiceImpl implements AnswerService {
         for (Answer answer : answers) {
             List<String> selectedOptions = answer.getSelectedOptions();
             //选择的选项为空，说明不是选择题的答案，跳过
-            if(selectedOptions==null || selectedOptions.isEmpty()){
+            if (selectedOptions == null || selectedOptions.isEmpty()) {
                 continue;
             }
             for (String option : selectedOptions) {
                 optionCountMap.put(option, optionCountMap.getOrDefault(option, 0) + 1);//如果选项不存在，默认值设为0，然后加1
             }
         }
-
+        Question question = questionMapper.findQuestionById(questionId);
         // 将统计结果转换为AnswerOption列表
         List<AnswerOption> stats = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : optionCountMap.entrySet()) {
             double rate = (double) entry.getValue() / answerTotalCount; // 计算选择比例
-            stats.add(new AnswerOption(questionId, entry.getKey(), entry.getValue(), rate));
+            if (question != null) {
+                stats.add(new AnswerOption(questionId, question.getTitle(), entry.getKey(), entry.getValue(), rate));
+            }
         }
         // 返回统计结果
         return stats;
@@ -123,10 +125,11 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
         int answerTotalCount = answers.size(); // 计算回答的总数
         List<AnswerText> texts = new ArrayList<>();
-        for (Answer answer : answers){
+        for (Answer answer : answers) {
+            Question question = questionMapper.findQuestionById(questionId);
             //填空题内的回答不为空，说明是填空题，才往texts里塞
-            if(!answer.getFillInAnswer().isEmpty()){
-                texts.add(new AnswerText(questionId, answer.getFillInAnswer()));
+            if (!answer.getFillInAnswer().isEmpty() && question != null) {
+                texts.add(new AnswerText(questionId, question.getTitle(), answer.getFillInAnswer()));
             }
         }
         return texts;
