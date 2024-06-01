@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/Message")
 public class MessageController {

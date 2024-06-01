@@ -3,6 +3,7 @@ package mygroup.questionnaire_star.controller;
 import mygroup.questionnaire_star.utils.BaiduAIUitil;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/BaiduAI")
 public class BaiduAIController {
