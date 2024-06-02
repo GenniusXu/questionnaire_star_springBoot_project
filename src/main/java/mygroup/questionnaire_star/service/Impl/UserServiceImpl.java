@@ -58,9 +58,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void setEmail(String openid, String Email) {
+        userMapper.setEmail(openid,Email);
+    }
+
+    @Override
     public String setOpenid(User user) {
         String openid= RandomUtil.generateRandomCode(16);
         userMapper.setOpenid(user.getName(),openid);
         return openid;
+    }
+
+    @Override
+    public User findUserByEmail(String Email) {
+        return userMapper.findUserByEmail(Email);
     }
 }

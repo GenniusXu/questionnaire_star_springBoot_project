@@ -21,6 +21,10 @@ public interface UserService {
     void setPassword(String openid,String password);
     //设置用户手机
     void setPhoneNumber(String openid,String phoneNumber);
+    //设置邮箱
+    void setEmail(String openid,String Email);
 
     String setOpenid(User user);
+
+    User findUserByEmail(String Email);
 }

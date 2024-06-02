@@ -38,5 +38,9 @@ public interface UserMapper {
     @Update("UPDATE user SET captcha=#{captcha} WHERE phoneNumber=#{phoneNumber}")
     void setCaptcha(String captcha,String phoneNumber);
 
+    @Update("UPDATE user SET Email=#{Email} WHERE openid=#{openid}")
+    void setEmail(String openid, String Email);
 
+    @Select("SELECT * FROM user WHERE Email=#{Email}")
+    User findUserByEmail(String Email);
 }

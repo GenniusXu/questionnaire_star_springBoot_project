@@ -12,6 +12,7 @@ public class User {
     String password;
     String openid;
     String phoneNumber;
+    String Email;
     //List<Integer> questionnaires_created;
     //List<Integer> questionnaires_managed;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
