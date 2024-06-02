@@ -13,6 +13,13 @@ spring:
     endpoint: dysmsapi.aliyuncs.com
     accessKeyId: LTAI5t9RKoPuj1crBdFZCjsC  # 从环境变量中获取
     accessKeySecret: 9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8  # 从环境变量中获取
+  # 发送邮件配置
+  # 发送邮件相关配置
+  mail:
+    host: smtp.qq.com # 此处使用的是qq邮箱进行邮件发送
+    username: 2274303187@qq.com # 发送邮件的账号（也就是本人账号）
+    password: ceigwhwsvqprdhij # 账号秘钥（注意这不是登录你QQ邮箱的密码！该秘钥在开启SMTP服务时会给出。）
+    default-encoding: UTF-8 #编码风格
   data:
     redis:
       host: localhost
