@@ -111,6 +111,10 @@ public class AnswerServiceImpl implements AnswerService {
         List<AnswerOption> stats = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : optionCountMap.entrySet()) {
             double rate = (double) entry.getValue() / answerTotalCount; // 计算选择比例
+            // 直接使用 String.format()格式化为2位小数的字符串
+            String rateStr = String.format("%.2f", rate);
+            // 将这个字符串转换回 double 类型
+            rate = Double.parseDouble(rateStr);
             if (question != null) {
                 stats.add(new AnswerOption(questionId, question.getTitle(), entry.getKey(), entry.getValue(), rate));
             }
@@ -145,4 +149,6 @@ public class AnswerServiceImpl implements AnswerService {
         Answer answer = answerMapper.getAnswerById(answerId);
         return answer;
     }
+
+
 }

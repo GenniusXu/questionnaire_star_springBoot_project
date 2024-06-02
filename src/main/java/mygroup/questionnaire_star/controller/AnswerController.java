@@ -28,7 +28,7 @@ public class AnswerController {
     QuestionnaireService questionnaireService;
 
     @GetMapping("/getAnswerById")
-    Result getAnswerById(@RequestParam Integer answerId){
+    Result getAnswerById(@RequestParam Integer answerId) {
         Answer answer = answerService.getAnswerById(answerId);
         return Result.success(answer);
     }
@@ -48,11 +48,11 @@ public class AnswerController {
             return Result.error("无效的问卷id");
         }
 
-        if(questionnaire.getStartTime()==null){
+        if (questionnaire.getStartTime() == null) {
             return Result.error("未设置开始时间");
         }
 
-        if(questionnaire.getEndTime()==null){
+        if (questionnaire.getEndTime() == null) {
             return Result.error("未设置结束时间");
         }
 
@@ -139,11 +139,11 @@ public class AnswerController {
             return Result.error("无效的问卷id");
         }
 
-        if(questionnaire.getStartTime()==null){
+        if (questionnaire.getStartTime() == null) {
             return Result.error("未设置开始时间");
         }
 
-        if(questionnaire.getEndTime()==null){
+        if (questionnaire.getEndTime() == null) {
             return Result.error("未设置结束时间");
         }
 
@@ -170,7 +170,7 @@ public class AnswerController {
         String type = questionService.getType(questionId);
         //if(!(type.equals("单选题")||type.equals("多选题")))return Result.error("本题不是选择题");
         List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
-        System.out.println(stats);
+        //System.out.println(stats);
         return Result.success(stats);
     }
 
@@ -180,7 +180,7 @@ public class AnswerController {
 
         Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
         List<Question> questions = questionService.listAll(questionnaireId);
-        System.out.println(questions);
+        //out.println(questions);
         List<List<AnswerOption>> allstats = new ArrayList<>();
         for (Question question : questions) {
             String type = question.getType();
@@ -188,14 +188,13 @@ public class AnswerController {
             if (type.equals("单选题") || type.equals("多选题")) {
                 List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
                 //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
-                if(!stats.isEmpty()){
+                if (!stats.isEmpty()) {
                     allstats.add(stats);
                 }
             }
 
         }
-
-        System.out.println(allstats);
+        //System.out.println(allstats);
         return Result.success(allstats);
     }
 
@@ -213,7 +212,7 @@ public class AnswerController {
     Result getAllTypeResultStats(@RequestParam Integer questionnaireId) {
         Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
         List<Question> questions = questionService.listAll(questionnaireId);
-        System.out.println(questions);
+        //System.out.println(questions);
         List<List<AnswerOption>> allOptionStats = new ArrayList<>();
         List<List<AnswerText>> allTextStats = new ArrayList<>();
         // 创建一个类型为 Object 的 ArrayList 来保存合并后的结果
@@ -224,13 +223,13 @@ public class AnswerController {
             if (type.equals("单选题") || type.equals("多选题")) {
                 List<AnswerOption> stats = answerService.calculateOptionStats(questionId);
                 //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
-                if(!stats.isEmpty()){
+                if (!stats.isEmpty()) {
                     allOptionStats.add(stats);
                 }
             } else if (type.equals("填空题")) {
                 List<AnswerText> texts = answerService.listAllText(questionId);
                 //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
-                if(!texts.isEmpty()){
+                if (!texts.isEmpty()) {
                     allTextStats.add(texts);
                 }
             }
@@ -261,5 +260,35 @@ public class AnswerController {
         return Result.success(url);
     }
 
+    //仅仅筛选填空题，将包含garbageString的回答筛掉，将长度小于minimumLength的回答筛掉
+    @GetMapping("/fillter")
+    public Result fillter(@RequestParam Integer questionId, @RequestParam String garbageString, @RequestParam Integer minimumLength) {
+        Question question = questionService.getQuestionById(questionId);
+        if (question == null) {
+            return Result.error("无效的questionId");
+        } else if (!question.getType().equals("填空题")) {
+            return Result.error("该问题不是填空题！");
+        }
+        List<Answer> answers = answerService.listAllByQuestionId(questionId);
+        //所有有效回答
+        List<AnswerText> effectiveAnswers = new ArrayList<>();
+        //如果前端没传，则将garbageString和minimumLength设置一个默认值
+        if (garbageString == null) {
+            garbageString = "傻逼!";
+        }
+        if (minimumLength == null) {
+            minimumLength = 0;
+        }
+        for (Answer answer : answers) {
+            //如果是填空题
+            if (answer.getFillInAnswer() != null && !answer.getFillInAnswer().isEmpty()) {
+                //不包含garbageString的、长度大于等于minimumLength的，才加入有效回答effectiveAnswers中
+                if (!answer.getFillInAnswer().contains(garbageString) && answer.getFillInAnswer().length() >= minimumLength) {
+                    effectiveAnswers.add(new AnswerText(questionId, question.getTitle(), answer.getFillInAnswer()));
+                }
+            }
+        }
+        return Result.success(effectiveAnswers);
+    }
 
 }
