@@ -32,4 +32,10 @@ public interface QuestionnaireMapper {
             @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
     })
     Questionnaire getQuestionnaireById(Integer questionnaireId);
+
+    @Select("SELECT * FROM questionnaire WHERE managers_id IS NOT NULL AND managers_id != '';")
+    @Results({
+            @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
+    List<Questionnaire> ListAllQuestionnairesWithManagers();
 }

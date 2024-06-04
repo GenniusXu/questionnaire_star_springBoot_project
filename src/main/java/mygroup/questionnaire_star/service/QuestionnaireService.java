@@ -16,4 +16,6 @@ public interface QuestionnaireService {
     Questionnaire getById(Integer id);
 
     Questionnaire getQuestionnaireById(Integer questionnaireid);
+
+    List<Questionnaire> listAllByManagerId(String managerId);
 }

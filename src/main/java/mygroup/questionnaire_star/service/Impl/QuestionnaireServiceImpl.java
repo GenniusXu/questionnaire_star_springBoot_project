@@ -48,7 +48,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public void delete(Integer id) {
         //在删除问卷前，应当把问卷中的问题也删掉
         List<Question> questions = questionMapper.listAll(id);
-        for(Question question:questions){
+        for (Question question : questions) {
             questionMapper.delete(question.getId());
         }
         //删除问卷
@@ -84,6 +84,19 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public Questionnaire getQuestionnaireById(Integer questionnaireid) {
         Questionnaire questionnaire = questionnaireMapper.getQuestionnaireById(questionnaireid);
         return questionnaire;
+    }
+
+    @Override
+    public List<Questionnaire> listAllByManagerId(String managerId) {
+        List<Questionnaire> questionnairesWithManagers = questionnaireMapper.ListAllQuestionnairesWithManagers();
+        List<Questionnaire> resQuestionnaires = new ArrayList<>();
+        for (Questionnaire questionnaire : questionnairesWithManagers) {
+            List<String> managersId = questionnaire.getManagersId();
+            if (managersId.contains(managerId)) {
+                resQuestionnaires.add(questionnaire);
+            }
+        }
+        return resQuestionnaires;
     }
 
 

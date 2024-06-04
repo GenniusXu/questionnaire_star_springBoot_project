@@ -36,6 +36,13 @@ public class QuestionnaireController {
         return Result.success(questionnaires);
     }
 
+    //列出该用户管理的所有问卷（不包括它创建的）
+    @GetMapping("/listAllByManagerId")
+    public Result listAllByManagerId(String managerId){
+        List<Questionnaire> questionnaires = questionnaireService.listAllByManagerId(managerId);
+        return Result.success(questionnaires);
+    }
+
     //更新问卷
     @PutMapping("/update")
     public Result update(@RequestBody Questionnaire questionnaire) {
