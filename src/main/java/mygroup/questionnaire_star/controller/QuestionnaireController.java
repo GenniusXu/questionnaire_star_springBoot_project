@@ -81,4 +81,24 @@ public class QuestionnaireController {
         }
         return Result.success("问卷可填写");
     }
+
+    @PostMapping("/enter")
+    public Result user_enter(String requesterId,Integer questionnaireId){
+        if(questionnaireService.user_enter(requesterId,questionnaireId)){
+            return Result.success("进入成功！");
+        }
+        else{
+            return Result.error("进入失败！已被占用或传入信息不对");
+        }
+    }
+
+    @PostMapping("/exit")
+    public Result user_exit(String requesterId,Integer questionnaireId){
+        if(questionnaireService.user_exit(requesterId,questionnaireId)){
+            return Result.success("退出成功！");
+        }
+        else{
+            return Result.error("退出失败！传入信息不对");
+        }
+    }
 }

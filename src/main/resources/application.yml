@@ -11,8 +11,8 @@ spring:
     templateParam: code
     regionId: cn-hangzhou
     endpoint: dysmsapi.aliyuncs.com
-    accessKeyId: LTAI5t9RKoPuj1crBdFZCjsC  # 从环境变量中获取
-    accessKeySecret: 9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8  # 从环境变量中获取
+    accessKeyId: LTAI5t9RKoPuj1crBdFZCjsC
+    accessKeySecret: 9QKaTQDU0VidXJIVKmAvUE88Z0MSQ8
   # 发送邮件配置
   # 发送邮件相关配置
   mail:

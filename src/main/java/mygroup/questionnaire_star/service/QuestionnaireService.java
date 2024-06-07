@@ -18,4 +18,8 @@ public interface QuestionnaireService {
     Questionnaire getQuestionnaireById(Integer questionnaireid);
 
     List<Questionnaire> listAllByManagerId(String managerId);
+
+    Boolean user_enter(String requestId,Integer questionnaireId);
+
+    Boolean user_exit(String requestId,Integer questionnaireId);
 }

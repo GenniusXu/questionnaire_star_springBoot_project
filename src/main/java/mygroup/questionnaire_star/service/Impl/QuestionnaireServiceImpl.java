@@ -99,5 +99,29 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return resQuestionnaires;
     }
 
+    @Override
+    public Boolean user_enter(String requesterId,Integer questionnaireId) {
+        String editingId = questionnaireMapper.getQuestionnaireById(questionnaireId).getEditingId();
+        if(editingId==null||editingId.equals("!")||editingId.equals(requesterId)){
+            questionnaireMapper.setEditingId(requesterId,questionnaireId);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean user_exit(String requesterId,Integer questionnaireId) {
+        String editingId = questionnaireMapper.getQuestionnaireById(questionnaireId).getEditingId();
+        if(editingId==null||editingId.equals("!")){
+            return false;
+        }
+        else {
+            questionnaireMapper.setEditingId("!",questionnaireId);
+            return true;
+        }
+    }
+
 
 }

@@ -38,4 +38,7 @@ public interface QuestionnaireMapper {
             @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
     })
     List<Questionnaire> ListAllQuestionnairesWithManagers();
+
+    @Update("UPDATE questionnaire SET editingId=#{editingId} WHERE id=#{id}")
+    void setEditingId(String editingId, Integer id);
 }
