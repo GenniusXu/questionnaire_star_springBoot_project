@@ -17,9 +17,19 @@ spring:
   # 发送邮件相关配置
   mail:
     host: smtp.qq.com # 此处使用的是qq邮箱进行邮件发送
-    username: 2274303187@qq.com # 发送邮件的账号（也就是本人账号）
-    password: ceigwhwsvqprdhij # 账号秘钥（注意这不是登录你QQ邮箱的密码！该秘钥在开启SMTP服务时会给出。）
+    port: 465 # 或 587
+    # username: 2274303187@qq.com # 发送邮件的账号（也就是本人账号）
+    username: 2737804063@qq.com # 发送邮件的账号（也就是本人账号）
+    # password: ceigwhwsvqprdhij # 账号秘钥（注意这不是登录你QQ邮箱的密码！该秘钥在开启SMTP服务时会给出。）
+    password: mwuooyyltxzldeci # 账号秘钥（注意这不是登录你QQ邮箱的密码！该秘钥在开启SMTP服务时会给出。）
     default-encoding: UTF-8 #编码风格
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true # 对于 465 端口
+          starttls:
+            enable: true # 对于 587 端口
   data:
     redis:
       host: localhost
@@ -39,6 +49,3 @@ mybatis:
 # 设置SpringBoot监听端口号为8080
 server:
   port: 8080
-
-#redis
-

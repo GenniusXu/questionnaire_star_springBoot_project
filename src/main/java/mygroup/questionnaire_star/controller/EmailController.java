@@ -34,10 +34,12 @@ public class EmailController {
                 + "，切勿将验证码泄露给他人，本条验证码有效期5分钟。\n" +
                 "若不是本人操作，请无视"); // 发送邮件的内容
         message.setTo(target_email); // 指定要接收邮件的用户邮箱账号
-        message.setFrom("2274303187@qq.com"); // 发送邮件的邮箱账号，注意一定要和配置文件中的一致！
+        message.setFrom("2737804063@qq.com"); // 发送邮件的邮箱账号，注意一定要和配置文件中的一致！
+        System.out.println("到sender.send(message)了！");
         sender.send(message); // 调用send方法发送邮件即可
+        System.out.println("到redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES)了！");
         //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
-        redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES);
+        //redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES);
         return "放送成功";
     }
 }
