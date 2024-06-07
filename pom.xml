@@ -147,10 +147,36 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 			<version>2.6.13</version>   <!--可以省略版本 由SpringBoot自动确定适配版本-->
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
 
+		<!-- Jakarta Bean Validation API -->
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.1</version>
+		</dependency>
 
-	</dependencies>
+		<!-- Hibernate Validator, 作为 Jakarta Bean Validation 的实现 -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.1.Final</version>
+		</dependency>
+
+		<!-- Spring Boot Starter Validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+
+    </dependencies>
 
 	<build>
 		<plugins>
