@@ -22,4 +22,6 @@ public class Questionnaire {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime endTime;//结束时间
     String editingId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime lastEntryTime;//结束时间
 }

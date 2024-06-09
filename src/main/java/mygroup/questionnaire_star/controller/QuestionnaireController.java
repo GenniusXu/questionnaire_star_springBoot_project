@@ -82,6 +82,7 @@ public class QuestionnaireController {
         return Result.success("问卷可填写");
     }
 
+    //用户尝试进入问卷
     @PostMapping("/enter")
     public Result user_enter(String requesterId,Integer questionnaireId){
         if(questionnaireService.user_enter(requesterId,questionnaireId)){
@@ -92,6 +93,7 @@ public class QuestionnaireController {
         }
     }
 
+    //用户尝试退出问卷
     @PostMapping("/exit")
     public Result user_exit(String requesterId,Integer questionnaireId){
         if(questionnaireService.user_exit(requesterId,questionnaireId)){

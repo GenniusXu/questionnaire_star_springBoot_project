@@ -3,6 +3,7 @@ package mygroup.questionnaire_star.mapper;
 import mygroup.questionnaire_star.pojo.Questionnaire;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -41,4 +42,10 @@ public interface QuestionnaireMapper {
 
     @Update("UPDATE questionnaire SET editingId=#{editingId} WHERE id=#{id}")
     void setEditingId(String editingId, Integer id);
+
+    @Update("UPDATE questionnaire SET last_entry_time=#{now} WHERE id=#{questionnaireId}")
+    void setLastEntryTime(Integer questionnaireId, LocalDateTime now);
+
+    @Select("SELECT * FROM questionnaire")
+    List<Questionnaire> getAllQuestionnaire();
 }

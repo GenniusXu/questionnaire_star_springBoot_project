@@ -99,11 +99,13 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return resQuestionnaires;
     }
 
+    //
     @Override
     public Boolean user_enter(String requesterId,Integer questionnaireId) {
         String editingId = questionnaireMapper.getQuestionnaireById(questionnaireId).getEditingId();
-        if(editingId==null||editingId.equals("!")||editingId.equals(requesterId)){
+        if(editingId==null||editingId.equals(requesterId)){
             questionnaireMapper.setEditingId(requesterId,questionnaireId);
+            questionnaireMapper.setLastEntryTime(questionnaireId,LocalDateTime.now());
             return true;
         }
         else {
@@ -114,11 +116,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public Boolean user_exit(String requesterId,Integer questionnaireId) {
         String editingId = questionnaireMapper.getQuestionnaireById(questionnaireId).getEditingId();
-        if(editingId==null||editingId.equals("!")){
+        if(editingId==null){
             return false;
         }
         else {
-            questionnaireMapper.setEditingId("!",questionnaireId);
+            questionnaireMapper.setEditingId(null,questionnaireId);
             return true;
         }
     }
