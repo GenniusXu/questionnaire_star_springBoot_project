@@ -37,6 +37,11 @@ spring:
       database: 0
       timeout: 5000
       password: root@123456
+  # 文件上传大小限制（改大一点，否则文件上传的接口有可能会返回413错误：requestBody太大）
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 
 # 开启驼峰命名和下划线命名的自动转换（这样才能将pojo类中的字段名与MySQL中的字段名相匹配）

@@ -21,7 +21,7 @@ public class Questionnaire {
     LocalDateTime startTime;//开始时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime endTime;//结束时间
-    String editingId;
+    String editingId;//正在编辑的人的id
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime lastEntryTime;//结束时间
+    LocalDateTime lastEntryTime;//上次编辑时间
 }
