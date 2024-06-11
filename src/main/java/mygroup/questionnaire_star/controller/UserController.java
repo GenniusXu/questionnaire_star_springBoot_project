@@ -166,7 +166,13 @@ public class UserController {
     @PostMapping("/setPhoneNumber")
     public Result setPhoneNumber(String openid,
                                  @Pattern(regexp = "^[1][3-9][0-9]{9}$", message = "手机号格式不正确！") @NotEmpty(message = "手机号不能为空！") String phoneNumber) {
-        userService.setPhoneNumber(openid, phoneNumber);
+        User user = userService.findUserByPhone(phoneNumber);
+        if(user==null){
+            userService.setPhoneNumber(openid, phoneNumber);
+        }
+        else{
+            return Result.error("手机号已经注册过了!");
+        }
         return Result.success();
     }
 
