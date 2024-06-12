@@ -19,8 +19,8 @@ public class AliOssUtil {
     // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
     //EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
     // 直接填写访问凭证
-    private static final String ACCESS_KEY_ID="LTAI5tDK74j6uEX1cVk1ArLH";
-    private static final String ACCESS_KEY_SECRET="XAALjBCGzeOk9kDp0qMdQsiUYKn8aR";
+    private static final String ACCESS_KEY_ID = "LTAI5tDK74j6uEX1cVk1ArLH";
+    private static final String ACCESS_KEY_SECRET = "XAALjBCGzeOk9kDp0qMdQsiUYKn8aR";
     // 填写Bucket名称，例如examplebucket。
     private static final String BUCKET_NAME = "big-event-zty";
     // 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。
@@ -28,7 +28,7 @@ public class AliOssUtil {
     //传入文件名objectName和文件输入流对象in，将文件存储到阿里云对象存储（OSS）服务器上，返回访问URL地址
     public static String uploadFile(String objectName, InputStream in) throws Exception {
         // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(ENDPOINT,ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+        OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         String url = "";
         try {
             // 创建PutObjectRequest对象。
@@ -43,7 +43,7 @@ public class AliOssUtil {
             // 上传文件
             PutObjectResult result = ossClient.putObject(putObjectRequest);
             //url组成: https://bucket名称.区域节点/objectName
-            url = "https://"+BUCKET_NAME+"."+ENDPOINT.substring(ENDPOINT.lastIndexOf("/")+1)+"/"+objectName;
+            url = "https://" + BUCKET_NAME + "." + ENDPOINT.substring(ENDPOINT.lastIndexOf("/") + 1) + "/" + objectName;
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
                     + "but was rejected with an error response for some reason.");
@@ -66,11 +66,12 @@ public class AliOssUtil {
     }
 
     // 传入url，删除阿里云OSS上的对应图片
-    public static void deleteFile(String url){
+    public static boolean deleteFile(String url) {
         // 从URL中提取存储桶名称和对象名称
         String bucketName = extractBucketName(url);
         String objectName = extractObjectName(url);
 
+        boolean isSuccess;
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
 
@@ -78,12 +79,15 @@ public class AliOssUtil {
             // 删除对象
             ossClient.deleteObject(bucketName, objectName);
             System.out.println("对象删除成功");
+            isSuccess = true;
         } catch (Exception e) {
             System.err.println("对象删除失败：" + e.getMessage());
+            isSuccess = false;
         } finally {
             // 关闭OSSClient
             ossClient.shutdown();
         }
+        return isSuccess;
     }
 
     // 从URL中提取存储桶名称

@@ -5,7 +5,9 @@ import mygroup.questionnaire_star.pojo.AnswerOption;
 import mygroup.questionnaire_star.pojo.AnswerText;
 import mygroup.questionnaire_star.pojo.Question;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -30,4 +32,8 @@ public interface AnswerService {
     Question getQuestion(Answer answer);
 
     Answer getAnswerById(Integer answerId);
+
+    String uploadFile(MultipartFile file, String fileName) throws Exception;
+
+    String updateFile(String originUrl, MultipartFile newFile, String NewFileName) throws Exception;
 }

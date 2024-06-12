@@ -43,19 +43,15 @@ public class AnswerController {
             return Result.error("无效的问题id");
         }
         Questionnaire questionnaire = questionService.getQuestionnaire(question);
-
         if (questionnaire == null) {
             return Result.error("无效的问卷id");
         }
-
         if (questionnaire.getStartTime() == null) {
             return Result.error("未设置开始时间");
         }
-
         if (questionnaire.getEndTime() == null) {
             return Result.error("未设置结束时间");
         }
-
         //如果超出最末时间
         if (questionnaire.getEndTime().isBefore(now)) {
             return Result.error("问卷已经于" + questionnaire.getEndTime() + "结束");
@@ -159,6 +155,15 @@ public class AnswerController {
             return Result.error("问卷已经停止收集");
         }
 
+        //修改文件题回答的特殊处理（需要先查找并删除旧的文件（如果有旧的文件，且旧文件跟新文件不一样的话）
+        // （必须是不一样的Url，否则调两次接口且没有上传新文件的话，就会删了旧的（也是新的），Url就会指向一个不存在的文件）
+        Answer originAnswer = answerService.getAnswerById(answer.getId());
+        String originUrl = originAnswer.getFileURL();
+        String newUrl = answer.getFileURL();
+        if (!newUrl.isEmpty() && !originUrl.isEmpty() && !newUrl.equals(originUrl)) {
+            AliOssUtil.deleteFile(originUrl);
+        }
+
         answer = answerService.update(answer);
         return Result.success(answer);
     }
@@ -241,23 +246,15 @@ public class AnswerController {
 
     @PostMapping("/upload_file")
     public Result uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String fileName) throws Exception {
-        //如果前端没有有指定文件名，那就用文件自己本身的文件名
-        if (fileName.isEmpty()) {
-            //在原文件名的基础上加上UUID，保证文件的名字是唯一的,从而防止文件覆盖
-            String originalFilename = file.getOriginalFilename();
-            //fileName = UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
-            fileName = UUID.randomUUID().toString() + originalFilename;
-        }
-        //如果前端有指定文件名，那就按照前端指定的文件名fileName（但要加上扩展名）
-        else {
-            //获取文件扩展名
-            String extension = file.getOriginalFilename().substring(fileName.lastIndexOf(".") + 1);
-            fileName = fileName + "." + extension;
-        }
-        //将文件上传到阿里云，并获取URL
-        String url = AliOssUtil.uploadFile(fileName, file.getInputStream());
-        //String url = "http://模拟url";
+        String url = answerService.uploadFile(file, fileName);
         return Result.success(url);
+    }
+
+    @PutMapping("/updateFile")
+    public Result updateFile(@RequestParam String originUrl, @RequestParam("newFile") MultipartFile newFile,
+                             @RequestParam String NewFileName) throws Exception {
+        String NewUrl = answerService.updateFile(originUrl, newFile, NewFileName);
+        return Result.success(NewUrl);
     }
 
     //仅仅筛选填空题，将包含garbageString的回答筛掉，将长度小于minimumLength的回答筛掉

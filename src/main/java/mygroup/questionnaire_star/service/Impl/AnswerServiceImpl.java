@@ -3,19 +3,17 @@ package mygroup.questionnaire_star.service.Impl;
 import mygroup.questionnaire_star.mapper.AnswerMapper;
 import mygroup.questionnaire_star.mapper.QuestionMapper;
 import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
-import mygroup.questionnaire_star.pojo.Answer;
-import mygroup.questionnaire_star.pojo.AnswerOption;
-import mygroup.questionnaire_star.pojo.AnswerText;
-import mygroup.questionnaire_star.pojo.Question;
+import mygroup.questionnaire_star.pojo.*;
 import mygroup.questionnaire_star.service.AnswerService;
 import mygroup.questionnaire_star.service.QuestionService;
+import mygroup.questionnaire_star.utils.AliOssUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,6 +146,37 @@ public class AnswerServiceImpl implements AnswerService {
     public Answer getAnswerById(Integer answerId) {
         Answer answer = answerMapper.getAnswerById(answerId);
         return answer;
+    }
+
+    public String uploadFile(MultipartFile file, String fileName) throws Exception {
+        //如果前端没有有指定文件名，那就用文件自己本身的文件名
+        if (fileName.isEmpty()) {
+            //在原文件名的基础上加上UUID，保证文件的名字是唯一的,从而防止文件覆盖
+            String originalFilename = file.getOriginalFilename();
+            //fileName = UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
+            fileName = UUID.randomUUID().toString() + originalFilename;
+        }
+        //如果前端有指定文件名，那就按照前端指定的文件名fileName（但要加上扩展名）
+        else {
+            //获取文件扩展名
+            String extension = file.getOriginalFilename().substring(fileName.lastIndexOf(".") + 1);
+            fileName = fileName + "." + extension;
+        }
+        //将文件上传到阿里云，并获取URL
+        String url = AliOssUtil.uploadFile(fileName, file.getInputStream());
+        //String url = "http://模拟url";
+        return url;
+    }
+
+    public String updateFile(String originUrl, MultipartFile newFile, String NewFileName) throws Exception {
+        //删除原文件
+        boolean issuccess = AliOssUtil.deleteFile(originUrl);
+        if (!issuccess) {
+            return null;
+        }
+        //上传新文件
+        String NewUrl = this.uploadFile(newFile, NewFileName);
+        return NewUrl;
     }
 
 
