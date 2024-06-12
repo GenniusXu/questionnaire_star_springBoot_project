@@ -160,7 +160,7 @@ public class AnswerController {
         Answer originAnswer = answerService.getAnswerById(answer.getId());
         String originUrl = originAnswer.getFileURL();
         String newUrl = answer.getFileURL();
-        if (!newUrl.isEmpty() && !originUrl.isEmpty() && !newUrl.equals(originUrl)) {
+        if (newUrl != null && originUrl != null && !newUrl.isEmpty() && !originUrl.isEmpty() && !newUrl.equals(originUrl)) {
             AliOssUtil.deleteFile(originUrl);
         }
 
