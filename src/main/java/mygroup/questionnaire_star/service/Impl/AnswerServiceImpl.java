@@ -125,7 +125,6 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public List<AnswerText> listAllText(Integer questionId) {
         List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
-        int answerTotalCount = answers.size(); // 计算回答的总数
         List<AnswerText> texts = new ArrayList<>();
         for (Answer answer : answers) {
             Question question = questionMapper.findQuestionById(questionId);
@@ -135,6 +134,19 @@ public class AnswerServiceImpl implements AnswerService {
             }
         }
         return texts;
+    }
+
+    public List<AnswerFile> listAllFileURL(Integer questionId) {
+        List<Answer> answers = answerMapper.listAllByQuestionId(questionId);
+        List<AnswerFile> fileURLs = new ArrayList<>();
+        for (Answer answer : answers) {
+            Question question = questionMapper.findQuestionById(questionId);
+            //FileURL不为空，说明是文件上传题，才往fileURLs里塞
+            if (!answer.getFileURL().isEmpty() && question != null) {
+                fileURLs.add(new AnswerFile(questionId, question.getTitle(), answer.getFileURL()));
+            }
+        }
+        return fileURLs;
     }
 
     @Override

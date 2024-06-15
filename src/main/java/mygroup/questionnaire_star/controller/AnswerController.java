@@ -220,6 +220,7 @@ public class AnswerController {
         //System.out.println(questions);
         List<List<AnswerOption>> allOptionStats = new ArrayList<>();
         List<List<AnswerText>> allTextStats = new ArrayList<>();
+        List<List<AnswerFile>> allFileStats = new ArrayList<>();
         // 创建一个类型为 Object 的 ArrayList 来保存合并后的结果
         ArrayList<Object> AllTypeResultStats = new ArrayList<Object>();
         for (Question question : questions) {
@@ -237,10 +238,17 @@ public class AnswerController {
                 if (!texts.isEmpty()) {
                     allTextStats.add(texts);
                 }
+            } else if (type.equals("文件上传题")) {
+                List<AnswerFile> fileURLs = answerService.listAllFileURL(questionId);
+                //非空才加进结果里，避免因为有些问题没有人回答而导致最后返回的结果有一堆的空[]
+                if (fileURLs != null && !fileURLs.isEmpty()) {
+                    allFileStats.add(fileURLs);
+                }
             }
         }
         AllTypeResultStats.addAll(allOptionStats);
         AllTypeResultStats.addAll(allTextStats);
+        AllTypeResultStats.addAll(allFileStats);
         return Result.success(AllTypeResultStats);
     }
 
