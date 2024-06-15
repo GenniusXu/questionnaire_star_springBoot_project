@@ -1,9 +1,6 @@
 package mygroup.questionnaire_star.service;
 
-import mygroup.questionnaire_star.pojo.Answer;
-import mygroup.questionnaire_star.pojo.AnswerOption;
-import mygroup.questionnaire_star.pojo.AnswerText;
-import mygroup.questionnaire_star.pojo.Question;
+import mygroup.questionnaire_star.pojo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +25,8 @@ public interface AnswerService {
     List<AnswerOption>calculateOptionStats(Integer questionId);
 
     List<AnswerText>listAllText(Integer questionId);
+
+    public List<AnswerFile> listAllFileURL(Integer questionId);
 
     Question getQuestion(Answer answer);
 
