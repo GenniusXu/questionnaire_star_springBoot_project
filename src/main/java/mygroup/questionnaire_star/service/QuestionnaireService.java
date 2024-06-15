@@ -22,4 +22,6 @@ public interface QuestionnaireService {
     Boolean user_enter(String requestId,Integer questionnaireId);
 
     Boolean user_exit(String requestId,Integer questionnaireId);
+
+    void checkEditor();
 }

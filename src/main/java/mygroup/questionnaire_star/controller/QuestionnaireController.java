@@ -85,6 +85,7 @@ public class QuestionnaireController {
     //用户尝试进入问卷
     @PostMapping("/enter")
     public Result user_enter(String requesterId,Integer questionnaireId){
+        questionnaireService.checkEditor();
         if(questionnaireService.user_enter(requesterId,questionnaireId)){
             return Result.success("进入成功！");
         }
