@@ -50,4 +50,7 @@ public class QuestionController {
         question = questionService.update(question);
         return Result.success(question);
     }
+
+    //检查共同编辑状态
+
 }

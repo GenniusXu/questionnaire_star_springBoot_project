@@ -39,7 +39,7 @@ public class EmailController {
         sender.send(message); // 调用send方法发送邮件即可
         System.out.println("到redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES)了！");
         //往redis中设置数据：key、value、过期值、过期时间单位  MINUTES代表分钟
-        //redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(target_email, code, 30, TimeUnit.MINUTES);
         return "放送成功";
     }
 }

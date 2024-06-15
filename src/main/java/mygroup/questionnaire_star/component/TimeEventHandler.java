@@ -15,7 +15,7 @@ import java.util.List;
 public class TimeEventHandler {
     @Autowired
     QuestionnaireMapper questionnaireMapper;
-    @Scheduled(cron = "0 0,30 * * * ?") // 每半小时执行一次
+    @Scheduled(cron = "0 */2 * * * ?") // 每2min执行一次
     public void checkEditor(){
 
         // 定义半小时的分钟数
