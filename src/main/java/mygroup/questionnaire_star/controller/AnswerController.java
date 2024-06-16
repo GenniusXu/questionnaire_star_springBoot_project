@@ -278,10 +278,10 @@ public class AnswerController {
         //所有有效回答
         List<AnswerText> effectiveAnswers = new ArrayList<>();
         //如果前端没传，则将garbageString和minimumLength设置一个默认值
-        if (garbageString == null) {
+        if (garbageString == null || garbageString.isEmpty()) {
             garbageString = "傻逼!";
         }
-        if (minimumLength == null) {
+        if (minimumLength == null || minimumLength < 0) {
             minimumLength = 0;
         }
         for (Answer answer : answers) {
