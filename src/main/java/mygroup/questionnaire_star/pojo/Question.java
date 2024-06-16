@@ -10,6 +10,6 @@ public class Question {
     Integer number; // 问题在问卷中的编号
     Integer questionnaireId; // 所属问卷的Id
     String type; // 问题类型，“单选题”，“多选题”，“填空题”
-    String title; // 题目
+    String title = ""; // 题目
     List<String> options; // 选项
 }

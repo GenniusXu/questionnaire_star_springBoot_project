@@ -129,7 +129,7 @@ public class AnswerServiceImpl implements AnswerService {
         for (Answer answer : answers) {
             Question question = questionMapper.findQuestionById(questionId);
             //填空题内的回答不为空，说明是填空题，才往texts里塞
-            if (!answer.getFillInAnswer().isEmpty() && question != null) {
+            if (answer != null && !answer.getFillInAnswer().isEmpty() && question != null) {
                 texts.add(new AnswerText(questionId, question.getTitle(), answer.getFillInAnswer()));
             }
         }
@@ -142,7 +142,7 @@ public class AnswerServiceImpl implements AnswerService {
         for (Answer answer : answers) {
             Question question = questionMapper.findQuestionById(questionId);
             //FileURL不为空，说明是文件上传题，才往fileURLs里塞
-            if (!answer.getFileURL().isEmpty() && question != null) {
+            if (answer != null && !answer.getFileURL().isEmpty() && question != null) {
                 fileURLs.add(new AnswerFile(questionId, question.getTitle(), answer.getFileURL()));
             }
         }
