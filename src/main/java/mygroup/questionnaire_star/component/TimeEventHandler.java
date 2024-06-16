@@ -4,6 +4,8 @@ import mygroup.questionnaire_star.mapper.QuestionnaireMapper;
 import mygroup.questionnaire_star.pojo.Questionnaire;
 import org.jetbrains.annotations.Async;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +14,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
+@EnableScheduling
 public class TimeEventHandler {
     @Autowired
     QuestionnaireMapper questionnaireMapper;
-    @Scheduled(cron = "0 */2 * * * ?") // 每2min执行一次
+
+//    @Scheduled(cron ="*/6 * * * * ?")
+//    public void sayHello() {
+//        System.out.println("hello");
+//    }
+
+    @Scheduled(cron = "*/120 * * * * ?") // 每2min执行一次
     public void checkEditor(){
 
         // 定义半小时的分钟数
@@ -27,7 +36,7 @@ public class TimeEventHandler {
         for (Questionnaire questionnaire : questionnaireList) {
             // 检查编辑时间是否超过半小时
             if (questionnaire.getLastEntryTime() != null &&
-                    !questionnaire.getEditingId().isEmpty() && !questionnaire.getEditingId().equals("!")) {
+                    questionnaire.getEditingId()!=null&&!questionnaire.getEditingId().isEmpty() && !questionnaire.getEditingId().equals("!")) {
                 if (ChronoUnit.MINUTES.between(questionnaire.getLastEntryTime(), now) >= twoHoursInMinutes) {
                     // 更新正在编辑用户为空
                     questionnaireMapper.setEditingId(null,questionnaire.getId());

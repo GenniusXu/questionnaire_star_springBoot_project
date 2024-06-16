@@ -47,5 +47,8 @@ public interface QuestionnaireMapper {
     void setLastEntryTime(Integer questionnaireId, LocalDateTime now);
 
     @Select("SELECT * FROM questionnaire")
+    @Results({
+            @Result(property = "managersId", column = "managers_id", typeHandler = mygroup.questionnaire_star.config.StringListTypeHandler.class)
+    })
     List<Questionnaire> getAllQuestionnaire();
 }

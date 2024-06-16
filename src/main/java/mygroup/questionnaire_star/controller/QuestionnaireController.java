@@ -100,8 +100,6 @@ public class QuestionnaireController {
         if(questionnaireService.user_exit(requesterId,questionnaireId)){
             return Result.success("退出成功！");
         }
-        else{
-            return Result.error("退出失败！传入信息不对");
-        }
+        return Result.success();
     }
 }
