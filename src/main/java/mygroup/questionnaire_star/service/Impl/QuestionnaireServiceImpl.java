@@ -117,13 +117,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public Boolean user_exit(String requesterId,Integer questionnaireId) {
         String editingId = questionnaireMapper.getQuestionnaireById(questionnaireId).getEditingId();
-        if(editingId==null){
-            return false;
-        }
-        else {
-            questionnaireMapper.setEditingId(null,questionnaireId);
-            return true;
-        }
+        questionnaireMapper.setEditingId(null,questionnaireId);
+        return true;
     }
 
     @Override
